@@ -11,7 +11,8 @@ public class OneNode extends Node{
 	
 	public String toString(){
 		if(child != null){
-			return child.toString()+" "+ super.toString();
+			//return child.toString()+" "+ super.toString();
+			return super.toString()+" "+child.toString();
 		}
 		else
 			return super.toString();

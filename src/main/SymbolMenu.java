@@ -29,7 +29,6 @@ public class SymbolMenu extends JDialog implements WindowListener,SharedValues{
 	}
 	
 	public boolean checkVisibility(){
-		//System.out.println("yo");
 		return visible;
 	}
 	

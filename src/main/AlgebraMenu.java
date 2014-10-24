@@ -17,6 +17,7 @@ public class AlgebraMenu extends JDialog implements ActionListener, SharedValues
 	private JComboBox setChoice;
 	private JTextField constantText;
 	private ArrayList<Function> funcs;
+	private JTabbedPane tables;
 	
 	
 	public AlgebraMenu(ArrayList<Function> functions){

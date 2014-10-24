@@ -32,7 +32,7 @@ public class Function {
 	}
 	
 	public String toString(){
-		return Character.toString(symbol);
+		return Character.toString(symbol)+ "  "+ arity;
 	}
 	
 	public boolean equals(Object o){

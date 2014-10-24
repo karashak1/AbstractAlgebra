@@ -11,7 +11,6 @@ import util.*;
 public class MainMenu extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 6400013318405434904L;
-	private static Object lock = new Object();
 	private JButton submit;
 	private JTextArea top;
 	private JTabbedPane bottom;

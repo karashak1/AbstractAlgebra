@@ -25,6 +25,18 @@ public class Main implements SharedValues{
 			symbols = new SymbolMenu(SharedValues.symbolValues,"Symbols",returnValues);
 			symbols.setModal(true);
 			symbols.setVisible(true);
+			//get arity of each symbol from the airty table
+			for(int x = 0; x < symbols.getValues().size(); x++){
+				char temp = symbols.getValues().get(x).charAt(0);
+				for(int y = 0; y < SharedValues.symbolValues.length; y++){
+					if(temp == SharedValues.symbolValues[y]){
+						funcs.add(new Function(temp,SharedValues.symbolArity[y]));
+						break;
+					}
+				}
+			}
+			//new version we already know arity based on symbol
+			/*
 			Object[] arity = {1,2,3};
 			for(int x = 0; x < symbols.getValues().size(); x++){
 				Integer ans = (Integer)JOptionPane.showInputDialog(null,
@@ -46,6 +58,11 @@ public class Main implements SharedValues{
 							SharedValues.symbolValues[0]);
 					funcs.add(new Function(symbols.getValues().get(x).charAt(0),symbol));
 				}
+				
+			}
+			*/
+			for(Function x : funcs){
+				System.out.println(x);
 			}
 			symbols = null;
 			vars = new SymbolMenu(SharedValues.variableValues,"Variables");
@@ -55,6 +72,9 @@ public class Main implements SharedValues{
 				variables.add(vars.getValues().get(x).charAt(0));
 			}
 			vars = null;
+			/*
+			 * Need to add algebra request
+			 */
 			Generator gen = new Generator(funcs,variables);
 			gen.generate();
 			ArrayList<Identity> terms = gen.getTerms();

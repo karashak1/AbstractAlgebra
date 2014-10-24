@@ -21,7 +21,7 @@ public class Generator {
 		ArrayList<Node> terms = new ArrayList<Node>();
 		for(Character i : vars)
 			terms.add(new Node(i));
-		while(terms.size() < 10){
+		while(terms.size() < 100){
 			ArrayList<Node> temp = new ArrayList<Node>();
 			for(Function i : funcs){
 				switch(i.getArity()){
