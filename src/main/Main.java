@@ -18,6 +18,7 @@ public class Main implements SharedValues{
 		// TODO Auto-generated method stub
 		MainMenu main;
 		SymbolMenu symbols,vars;
+		AlgebraTablesMenu algebra;
 		ArrayList<Character> variables = new ArrayList<Character>();
 		ArrayList<Function> funcs = new ArrayList<Function>();
 		ArrayList<String> returnValues = new ArrayList<String>();
@@ -61,9 +62,6 @@ public class Main implements SharedValues{
 				
 			}
 			*/
-			for(Function x : funcs){
-				System.out.println(x);
-			}
 			symbols = null;
 			vars = new SymbolMenu(SharedValues.variableValues,"Variables");
 			vars.setModal(true);
@@ -75,6 +73,10 @@ public class Main implements SharedValues{
 			/*
 			 * Need to add algebra request
 			 */
+			algebra = new AlgebraTablesMenu(funcs);
+			algebra.setModal(true);
+			algebra.setVisible(true);
+			
 			Generator gen = new Generator(funcs,variables);
 			gen.generate();
 			ArrayList<Identity> terms = gen.getTerms();

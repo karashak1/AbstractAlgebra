@@ -6,7 +6,7 @@ import java.awt.geom.Line2D;
 
 import javax.swing.*;
 
-public class FunctionTablePanel extends JPanel {
+public class FunctionTablePanel extends JComponent {
 
 	/**
 	 * 
@@ -20,6 +20,7 @@ public class FunctionTablePanel extends JPanel {
 	public FunctionTablePanel(int arity){
 		super();
 		this.setSize(450, 450);
+		this.setLayout(null);
 		this.arity = arity;
 		switch(arity){
 		case 1:
@@ -42,24 +43,25 @@ public class FunctionTablePanel extends JPanel {
 		}
 		int x,y,width, height;
 		x = y = 0;
-		width = height = 20;
+		width = height = 30;
 		/*
 		 * draw vertical line then 10 boxes
 		 * draw horizontal line
 		 * drop into switch statement
 		 */
-		x = 25;
+		x = 32;
 		vert = new Line2D.Float(x, y, x, this.getHeight());
-		x += 5;
+		x += 3;
 		for(int i = 1; i < jTable[0].length; i++){
 			jTable[0][i].setBounds(x, y, width, height);
 			this.add(jTable[0][i]);
-			x+=25;
+			x+=35;
 		}
 		//draw horizontal line
-		y += 25;
+		y += 35;
 		horz = new Line2D.Float(0, y, this.getWidth(), y);
 		y += 5;
+		
 		switch(arity){
 		case 1:
 			/*arity one is a single row of inputs 
@@ -67,11 +69,11 @@ public class FunctionTablePanel extends JPanel {
 			 * draw horizontal line
 			 * skip 1,0, then draw next 10
 			 */
-			x = 30;
+			x = 35;
 			for(int i = 1; i < jTable[1].length; i++ ){
 				jTable[1][i].setBounds(x, y, width, height);
 				this.add(jTable[1][i]);
-				x+=25;
+				x+=35;
 			}
 				
 			break;
@@ -84,18 +86,20 @@ public class FunctionTablePanel extends JPanel {
 			 */
 			for(int i = 1; i < jTable.length; i++){
 				x= 0;
-				for(int j = 0; j < jTable[i].length; j++, x+=25){
+				for(int j = 0; j < jTable[i].length; j++, x+=35){
 					jTable[i][j].setBounds(x, y, width, height);
 					jTable[i][j].setVisible(true);
 					this.add(jTable[i][j]);
 				}
-				y+=25;
+				y+=35;
 			}
 			break;
 		default:
 			System.err.println("Something bad happened");
 		}
+		
 	}
+	
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -104,13 +108,14 @@ public class FunctionTablePanel extends JPanel {
 		g2D.draw(vert);
 	}
 	
+	
 	//creates a table when is called
 	public Integer[][] getTable(){
 		return table;
 	}
 	
 	public static void main(String[] args){
-		FunctionTablePanel s = new FunctionTablePanel(1);
+		FunctionTablePanel s = new FunctionTablePanel(2);
         JFrame frame = new JFrame();
         frame.setVisible(true);
         frame.setSize(new Dimension(450, 450));
