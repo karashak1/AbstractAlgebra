@@ -77,12 +77,14 @@ public class Main implements SharedValues{
 			algebra.setModal(true);
 			algebra.setVisible(true);
 			
+			/*
 			Generator gen = new Generator(funcs,variables);
 			gen.generate();
 			ArrayList<Identity> terms = gen.getTerms();
 			//System.out.println(terms.size());
 			main = new MainMenu(terms,funcs);
 			main.setVisible(true);
+			*/
 		}
 		catch(Exception e){
 			e.printStackTrace();

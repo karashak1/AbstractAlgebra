@@ -25,9 +25,11 @@ public class FunctionTablePanel extends JComponent {
 		switch(arity){
 		case 1:
 			jTable = new JTextField[2][11];
+			table = new Integer[2][11];
 			break;
 		case 2:
 			jTable = new JTextField[11][11];
+			table = new Integer[11][11];
 			break;
 		default:
 			System.err.println("Something bad happened");
@@ -45,11 +47,11 @@ public class FunctionTablePanel extends JComponent {
 		x = y = 0;
 		width = height = 30;
 		/*
-		 * draw vertical line then 10 boxes
-		 * draw horizontal line
+		 * draw 10 boxes
 		 * drop into switch statement
 		 */
 		x = 32;
+		//save position for vertical line
 		vert = new Line2D.Float(x, y, x, this.getHeight());
 		x += 3;
 		for(int i = 1; i < jTable[0].length; i++){
@@ -57,7 +59,7 @@ public class FunctionTablePanel extends JComponent {
 			this.add(jTable[0][i]);
 			x+=35;
 		}
-		//draw horizontal line
+		//save position for horizontal line
 		y += 35;
 		horz = new Line2D.Float(0, y, this.getWidth(), y);
 		y += 5;
@@ -100,7 +102,9 @@ public class FunctionTablePanel extends JComponent {
 		
 	}
 	
-	
+	/*
+	 * Draws the horizontal and vertical lines on the table
+	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D)g;
@@ -111,6 +115,16 @@ public class FunctionTablePanel extends JComponent {
 	
 	//creates a table when is called
 	public Integer[][] getTable(){
+		for(int x = 0; x < jTable.length; x++){
+			for(int y = 0; y < jTable[x].length; y++){
+				try{
+					table[x][y] = Integer.parseInt(jTable[x][y].getText());
+				}
+				catch(NumberFormatException e){
+					table[x][y] = null;
+				}
+			}
+		}
 		return table;
 	}
 	
