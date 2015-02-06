@@ -150,7 +150,7 @@ public class AlgebraMenu extends JDialog implements ActionListener, SharedValues
 			for(int x = 0; x < ids.length; x++){
 				try{
 					String[] id = ids[x].split(Character.toString((char) 0x2261));
-					idents.add(new Identity(this.validateAndParanthesize(id[0]),this.validateAndParanthesize(id[1])));
+					//idents.add(new Identity(this.validateAndParanthesize(id[0]),this.validateAndParanthesize(id[1])));
 				}
 				catch(IndexOutOfBoundsException ioob){
 					System.err.println("invalid identity:"+ids[x]);
@@ -160,7 +160,7 @@ public class AlgebraMenu extends JDialog implements ActionListener, SharedValues
 			for(int x = 0; x < this.funcs.size(); x++)
 				if(text.contains(funcs.get(x).getSymbol().toString()))
 					functions.add(funcs.get(x));
-			alg = new Algebra(set,functions,constants,idents);
+			//alg = new Algebra(set,functions,constants,idents);
 			this.dispose();;
 		}
 			

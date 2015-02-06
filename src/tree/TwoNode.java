@@ -16,6 +16,13 @@ public class TwoNode extends Node {
 		return leftChild.toString()+" "+rightChild.toString()+" "+super.toString();
 	}
 	*/
+	public Node getLeftChild(){
+		return leftChild;
+	}
+	
+	public Node getRightChild(){
+		return rightChild;
+	}
 	
 	public String toString(){
 		return "("+leftChild.toString()+""+super.toString()+""+rightChild.toString()+")";

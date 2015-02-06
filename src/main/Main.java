@@ -19,6 +19,7 @@ public class Main implements SharedValues{
 		MainMenu main;
 		SymbolMenu symbols,vars;
 		AlgebraTablesMenu algebra;
+		Algebra[] algs = new Algebra[3];
 		ArrayList<Character> variables = new ArrayList<Character>();
 		ArrayList<Function> funcs = new ArrayList<Function>();
 		ArrayList<String> returnValues = new ArrayList<String>();
@@ -77,11 +78,13 @@ public class Main implements SharedValues{
 			algebra.setModal(true);
 			algebra.setVisible(true);
 			
-			/*
 			Generator gen = new Generator(funcs,variables);
 			gen.generate();
 			ArrayList<Identity> terms = gen.getTerms();
 			//System.out.println(terms.size());
+			algs[0] = new Algebra(variables,funcs,algebra.getConsts(),terms);
+			System.out.println(algs[0]);
+			/*
 			main = new MainMenu(terms,funcs);
 			main.setVisible(true);
 			*/

@@ -12,6 +12,10 @@ public class Node {
 		return data.toString();
 	}
 	
+	public Character getData(){
+		return data;
+	}
+	
 	public boolean equals(Object o){
 		if(!(o instanceof Node))
 			return false;

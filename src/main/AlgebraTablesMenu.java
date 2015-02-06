@@ -64,6 +64,10 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		this.setLocationRelativeTo(null);
 	}
 	
+	public ArrayList<Integer> getConsts(){
+		return this.algebraConstants;
+	}
+	
 	private boolean validate(ArrayList<Integer[][]> tables){
 		/*
 		 * TODO
@@ -84,7 +88,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		}
 		Integer[][] table = tablePanels.get(y).getTable();
 		if(table == null)
-			System.out.println("This is null stupid");
+			System.out.println("ERROR:null table");
 		for(x = 1; x < table[0].length; x++){
 			if(table[0][x] == null)
 				break;
@@ -227,7 +231,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		boolean valid = this.validate(tempTables);
 		if(valid){
 			//do stuff
-			System.out.println("So far so good");
+			//System.out.println("So far so good");
 			//must now create the tables
 			this.createTables(this.algebraConstants.size());
 			/*
@@ -245,12 +249,13 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 				}
 			}
 			*/
+			this.setVisible(false);
 		}
 		else{
 			System.err.println("No good bub");
 		}
 		
-		System.exit(0);
+		//System.exit(0);
 		
 	}
 

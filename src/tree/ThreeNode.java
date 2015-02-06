@@ -16,6 +16,10 @@ public class ThreeNode extends TwoNode{
 	}
 	*/
 	
+	public Node getCenterChild(){
+		return centerChild;
+	}
+	
 	public String toString(){
 		return "("+leftChild.toString()+this.data+centerChild.toString()+this.secondData+rightChild.toString()+")";
 	}

@@ -9,6 +9,10 @@ public class OneNode extends Node{
 		this.child = child;
 	}
 	
+	public Node getChild(){
+		return child;
+	}
+	
 	public String toString(){
 		if(child != null){
 			//return child.toString()+" "+ super.toString();
