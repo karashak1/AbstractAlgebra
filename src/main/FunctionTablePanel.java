@@ -2,11 +2,13 @@ package main;
 
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
 
 import javax.swing.*;
 
-public class FunctionTablePanel extends JComponent {
+public class FunctionTablePanel extends JComponent implements ActionListener {
 
 	/**
 	 * 
@@ -16,6 +18,8 @@ public class FunctionTablePanel extends JComponent {
 	private Integer table[][];
 	private JTextField jTable[][];
 	private Line2D horz,vert;
+	private String[] commands = {"UP","DOWN","LEFT","RIGHT"};
+	
 	
 	public FunctionTablePanel(int arity){
 		super();
@@ -38,9 +42,15 @@ public class FunctionTablePanel extends JComponent {
 	}
 	
 	private void init(){
+		
 		for(int i= 0; i < jTable.length; i++){
 			for(int j = 0; j < jTable[i].length; j++){
 				jTable[i][j] = new JTextField();
+				//jTable[i][j].setFocusTraversalKeysEnabled(false);
+				jTable[i][j].setName(i+","+j);
+				for(String name : commands){
+					jTable[i][j].registerKeyboardAction(this,name,KeyStroke.getKeyStroke(name), JComponent.WHEN_FOCUSED);
+				}
 			}
 		}
 		int x,y,width, height;
@@ -100,6 +110,7 @@ public class FunctionTablePanel extends JComponent {
 			System.err.println("Something bad happened");
 		}
 		
+		
 	}
 	
 	/*
@@ -130,11 +141,58 @@ public class FunctionTablePanel extends JComponent {
 	
 	public static void main(String[] args){
 		FunctionTablePanel s = new FunctionTablePanel(2);
+		//s.requestFocusInWindow();
         JFrame frame = new JFrame();
         frame.setVisible(true);
         frame.setSize(new Dimension(450, 450));
         frame.add(s);
+        //frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //s.requestFocusInWindow();
+ 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		JTextField temp = (JTextField)arg0.getSource();
+		String action = arg0.getActionCommand();
+		String[] split = temp.getName().split(",");
+		//System.out.println("we have movement by "+split[0]+","+split[1]+" with the commad "+action);
+		try{
+			Integer row, col;
+			row = Integer.parseInt(split[0]);
+			col = Integer.parseInt(split[1]);
+			if (action.equals(commands[0])){
+				//System.out.println("we go up");
+				if(row > 0 || (row == 1 && col != 0)){
+					this.jTable[row-1][col].requestFocus();
+				}
+			}
+	        else if (action.equals(commands[1])){
+	        	//System.out.println("we go down");
+	        	if(row < 10){
+	        		//System.out.println(jTable.length);
+					this.jTable[row+1][col].requestFocus();
+				}
+	        }
+	        else if (action.equals(commands[2])){
+	        	//System.out.println("we go left");
+	        	if((row != 0  && col == 1) ||  col > 0){
+					this.jTable[row][col-1].requestFocus();
+				}
+	        }
+	        else if (action.equals(commands[3])){
+	        	//System.out.println("we go right");
+	        	if(col < 10){
+					this.jTable[row][col+1].requestFocus();
+				}
+	        }
+		}
+		catch(Exception e){
+			System.err.println(e.getMessage());
+		}
+		
 	}
 
 }

@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import TermGenerator.Generator;
 import util.*;
+import tree.*;
 
 public class Main implements SharedValues{
 	
@@ -78,16 +79,16 @@ public class Main implements SharedValues{
 			algebra.setModal(true);
 			algebra.setVisible(true);
 			
-			Generator gen = new Generator(funcs,variables);
+			
+			Generator gen = new Generator(funcs,variables, algebra.getConsts());
 			gen.generate();
 			ArrayList<Identity> terms = gen.getTerms();
 			//System.out.println(terms.size());
 			algs[0] = new Algebra(variables,funcs,algebra.getConsts(),terms);
-			System.out.println(algs[0]);
-			/*
-			main = new MainMenu(terms,funcs);
+			//System.out.println(algs[0]);
+			main = new MainMenu(algs);
 			main.setVisible(true);
-			*/
+			
 		}
 		catch(Exception e){
 			e.printStackTrace();

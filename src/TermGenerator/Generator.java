@@ -10,16 +10,20 @@ public class Generator {
 	private ArrayList<Identity> terms;
 	private ArrayList<Function> funcs;
 	private ArrayList<Character> vars;
+	private ArrayList<Integer> constants;
 	
-	public Generator(ArrayList<Function> symbols, ArrayList<Character> vars){
+	public Generator(ArrayList<Function> symbols, ArrayList<Character> vars, ArrayList<Integer> constants){
 		terms = new ArrayList<Identity>();
 		funcs = symbols;
 		this.vars = vars;
+		this.constants = constants;
 	}
 	
 	public void generate(){
 		ArrayList<Node> terms = new ArrayList<Node>();
 		for(Character i : vars)
+			terms.add(new Node(i));
+		for(Integer i : this.constants)
 			terms.add(new Node(i));
 		while(terms.size() < 100){
 			ArrayList<Node> temp = new ArrayList<Node>();
@@ -112,7 +116,7 @@ public class Generator {
 		System.out.println(terms.size());
 		for(Node i: terms)
 			System.out.println(i);
-		Generator gen = new Generator(funcs,vars);
+		Generator gen = new Generator(funcs,vars, new ArrayList<Integer>());
 		gen.generate();
 		ArrayList<Identity> stringTerms = gen.getTerms();
 		System.out.println(stringTerms.size());

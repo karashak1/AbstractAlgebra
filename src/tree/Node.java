@@ -2,9 +2,9 @@ package tree;
 
 public class Node {
 	
-	protected Character data;
+	protected Object data;
 	
-	public Node(Character data){
+	public Node(Object data){
 		this.data = data;
 	}
 	
@@ -12,7 +12,7 @@ public class Node {
 		return data.toString();
 	}
 	
-	public Character getData(){
+	public Object getData(){
 		return data;
 	}
 	

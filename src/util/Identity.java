@@ -26,14 +26,27 @@ public class Identity {
 			return false;
 	}
 	
+	public boolean same(){
+		String left = leftSide.toString();
+		String right = rightSide.toString();
+		if(left.equals(right))
+			return true;
+		else
+			return false;
+	}
+	
 	private int eval(Node node,int x, int y, int z, int w){
 		/*
 		 * [x] Find if a function or a variable 
 		 * [x]if function find its arity cast node and get the left and right sides
 		 * [x] once values obtained pass to functiont to get result return
 		 * [x]if var return value
+		 * [x] if a constant return
 		 */
-		Character data = node.getData();
+		if(node.getData() instanceof Integer){
+			return (Integer)node.getData();
+		}
+		Character data = (Character)node.getData();
 		switch(data){
 			case 'x':
 				return x;
@@ -82,5 +95,6 @@ public class Identity {
 	public String toString(){
 		return rightSide+""+Character.toString((char) 0x2261)+""+leftSide;
 	}
+	
 
 }

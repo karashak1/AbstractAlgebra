@@ -2,6 +2,7 @@ package main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -37,6 +38,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		label.setHorizontalTextPosition(JLabel.CENTER);
 		
 		tables = new JTabbedPane();
+		//tables.registerKeyboardAction(this,"TAB", KeyStroke.getKeyStroke(KeyEvent.VK_TAB,0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		tablePanels = new ArrayList<FunctionTablePanel>();
 		tables.setBounds(0,20,500,500);
 		for(int x = 0; x < funcs.size(); x++){
@@ -60,7 +62,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		this.setTitle("Algerbra");
 		this.setSize(500, 600);
 		this.setResizable(false);
-		//this.setDefaultCloseOperation();
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 	}
 	
@@ -82,7 +84,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		//find a table with arity 2
 		for(y = 0; y < this.funcs.size(); y++){
 			if(funcs.get(y).getArity() == 2){
-				System.out.println("table "+y);
+				//System.out.println("table "+y);
 				break;
 			}
 		}
@@ -99,10 +101,10 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 				break;
 		}
 		rows = x;
-		System.out.println("Rows "+rows+"; Columns "+columns);
+		//System.out.println("Rows "+rows+"; Columns "+columns);
 		for(int i = 0; i < tablePanels.size(); i++){
 			table = tablePanels.get(i).getTable();
-			System.out.println("Checking table "+i);
+			//System.out.println("Checking table "+i);
 			switch(funcs.get(i).getArity()){
 			case 1://just check columns
 				for(x = 0; x < 2;x++){
@@ -113,7 +115,8 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 							continue;
 						if(table[x][y] == null){
 							//print a warning of where the error is
-							System.out.println("table:"+i+", row:" +x+", columns:"+y);
+							//System.out.println("table:"+i+", row:" +x+", columns:"+y);
+							JOptionPane.showMessageDialog(null,"table:"+i+", row:" +x+", columns:"+y,"Table Error", JOptionPane.ERROR_MESSAGE);
 							return false;
 						}
 					}
@@ -126,7 +129,8 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 							continue;
 						if(table[x][y] == null){
 							//print a warning of where the error is
-							System.out.println("table:"+i+", row:" +x+", columns:"+y);
+							//System.out.println("table:"+i+", row:" +x+", columns:"+y);
+							JOptionPane.showMessageDialog(null,"table:"+i+", row:" +x+", columns:"+y,"Table Error", JOptionPane.ERROR_MESSAGE);
 							return false;
 						}
 					}
@@ -148,26 +152,29 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 				constants.add(table[0][x]);
 			}
 			else{
-				System.err.println("Error: duplicate constants");
+				//System.err.println("Error: duplicate constants");
+				JOptionPane.showMessageDialog(null,"Duplicate Constants","Constant Error", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
 		}
 		if(funcs.get(0).getArity() == 2){
 			for(x = 1; x < rows; x++){
 				if(!constants.contains(table[x][0])){
-					System.err.println("ERROR: missing constant");
+					//System.err.println("ERROR: missing constant");
+					JOptionPane.showMessageDialog(null,"Missing Constant","Constant Error", JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			}
 		}
 		//got constants now must test other tables
-		System.out.println(constants);
+		//System.out.println(constants);
 		for(x = 1; x < tablePanels.size(); x++){
 			table = tablePanels.get(x).getTable();
 			//check columns
 			for(y = 1; y < columns; y++){
 				if(!constants.contains(table[0][x])){
-					System.err.println("ERROR: missing constant at table:"+x+", row:"+y+", value:"+table[0][x]);
+					//System.err.println("ERROR: missing constant at table:"+x+", row:"+y+", value:"+table[0][x]);
+					JOptionPane.showMessageDialog(null,"Missing constant at table:"+x+", row:"+y+", value:"+table[0][x],"Constant Error", JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			}
@@ -175,7 +182,8 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 			if(funcs.get(x).getArity() == 2){
 				for(y = 1; y < rows; y++){
 					if(!constants.contains(table[y][0])){
-						System.err.println("ERROR: missing constant at table:"+x+", row:"+y);
+						//System.err.println("ERROR: missing constant at table:"+x+", row:"+y);
+						JOptionPane.showMessageDialog(null,"Missing constant at table:"+x+", row:"+y,"Constant Error", JOptionPane.ERROR_MESSAGE);
 						return false;
 					}
 				}
@@ -227,34 +235,39 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		ArrayList<Integer[][]> tempTables = new ArrayList<Integer[][]>();
-		boolean valid = this.validate(tempTables);
-		if(valid){
-			//do stuff
-			//System.out.println("So far so good");
-			//must now create the tables
-			this.createTables(this.algebraConstants.size());
-			/*
-			for(int i = 0; i < funcs.size(); i++){
-				Integer[][] temp = funcs.get(i).getTable();
-				System.out.println("table for function "+funcs.get(i).getSymbol());
-				for(int y = 0; y < temp.length; y++){
-					for(int x = 0; x < temp[y].length; x++){
-						if(temp[y][x] == null)
-							System.out.print("\t");
-						else
-							System.out.print(temp[y][x]+"\t");
-					}
-					System.out.println();
-				}
-			}
-			*/
-			this.setVisible(false);
+		String command = arg0.getActionCommand();
+		if(command.contains("TAB")){
+			System.out.println("tab");
 		}
 		else{
-			System.err.println("No good bub");
+			ArrayList<Integer[][]> tempTables = new ArrayList<Integer[][]>();
+			boolean valid = this.validate(tempTables);
+			if(valid){
+				//do stuff
+				//System.out.println("So far so good");
+				//must now create the tables
+				this.createTables(this.algebraConstants.size());
+				/*
+				for(int i = 0; i < funcs.size(); i++){
+					Integer[][] temp = funcs.get(i).getTable();
+					System.out.println("table for function "+funcs.get(i).getSymbol());
+					for(int y = 0; y < temp.length; y++){
+						for(int x = 0; x < temp[y].length; x++){
+							if(temp[y][x] == null)
+								System.out.print("\t");
+							else
+								System.out.print(temp[y][x]+"\t");
+						}
+						System.out.println();
+					}
+				}
+				*/
+				this.setVisible(false);
+			}
+			else{
+				System.err.println("No good bub");
+			}
 		}
-		
 		//System.exit(0);
 		
 	}

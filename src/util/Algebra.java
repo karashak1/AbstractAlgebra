@@ -9,17 +9,37 @@ public class Algebra {
 	private ArrayList<Integer> constants;
 	private ArrayList<Identity> identities;
 	private ArrayList<Identity> potentialIdentities;
+	private ArrayList<Identity> rejectedIdentites;
 	
 	public Algebra(ArrayList<Character> variables,ArrayList<Function> funcs,ArrayList<Integer> constants, ArrayList<Identity> identities){
 		functions = funcs;
 		this.constants = constants;
 		this.potentialIdentities = identities;
 		this.identities = new ArrayList<Identity>();
+		this.rejectedIdentites = new ArrayList<Identity>();
 		this.variables = variables;
 		eval();
 	}
 	
+	
+	public ArrayList<Identity> getIdenitites(){
+		return identities;
+	}
+	
+	public ArrayList<Function> getFunctions(){
+		return functions;
+	}
+	
+	public ArrayList<Character> getVariables(){
+		return this.variables;
+	}
+	
+	public ArrayList<Identity> getRejectIdenities(){
+		return this.rejectedIdentites;
+	}
+	
 	private void eval(){
+		//System.out.println("in eval");
 		/*
 		 * TODO
 		 * [x] loop over all the potential identites
@@ -35,72 +55,65 @@ public class Algebra {
 			boolean forAll = true;
 			switch(variables.size()){
 			case 1:
-				for(x = 0; x < constants.size(); x++){
-					forAll = !temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(x), this.constants.get(x), functions);
-					if(!forAll)
-						break;
+				for(x = 0; x < constants.size() && forAll == true; x++){
+					forAll = temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(x), this.constants.get(x), functions);
 				}
 				break;
 			case 2:
-				for(x = 0; x < constants.size(); x++){
-					for(y = 0; y < constants.size(); y++){
-						if(constants.contains('x')){
-							if(constants.contains('z')){// x z
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(y), this.constants.get(x), functions);
+				for(x = 0; x < constants.size() && forAll == true; x++){
+					for(y = 0; y < constants.size() && forAll == true; y++){
+						if(this.variables.contains('x')){
+							if(this.variables.contains('z')){// x z
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(y), this.constants.get(x), functions);
 							}
-							else if(constants.contains('y')){// x y
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(y), this.constants.get(x), this.constants.get(x), functions);
+							else if(this.variables.contains('y')){// x y
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(y), this.constants.get(x), this.constants.get(x), functions);
 							}
 							else{ //x w
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(x), this.constants.get(y), functions);
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(x), this.constants.get(y), functions);
 							}
 						}
-						else if(constants.contains('y')){
+						else if(this.variables.contains('y')){
 							if(constants.contains('z')){// y z
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(y), this.constants.get(x), functions);
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(y), this.constants.get(x), functions);
 							}
 							else{ //y w
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(x), this.constants.get(y), functions);
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(x), this.constants.get(y), functions);
 							}
 						}
 						else{ //z w
-							forAll = !temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(x), this.constants.get(y), functions);
+							//System.out.println("In this one for some odd reason");
+							forAll = temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(x), this.constants.get(y), functions);
 						}
-						if(!forAll)
-							break;
 					}
 				}
 				break;
 			case 3:
-				for(x = 0; x < constants.size(); x++){
-					for(y = 0; y < constants.size(); y++){
-						for(z = 0; z < constants.size(); z++){
-							if(constants.contains('x') && constants.contains('y') && constants.contains('z')){ // x y z
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(y), this.constants.get(z), this.constants.get(x), functions);
+				for(x = 0; x < constants.size() && forAll == true; x++){
+					for(y = 0; y < constants.size() && forAll == true; y++){
+						for(z = 0; z < constants.size() && forAll == true; z++){
+							if(this.variables.contains('x') && this.variables.contains('y') && this.variables.contains('z')){ // x y z
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(y), this.constants.get(z), this.constants.get(x), functions);
 							}
-							else if(constants.contains('x') && constants.contains('z') && constants.contains('w')){// x z w
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(y), this.constants.get(z), functions);
+							else if(this.variables.contains('x') && this.variables.contains('z') && this.variables.contains('w')){// x z w
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(y), this.constants.get(z), functions);
 							}
-							else if(constants.contains('x') && constants.contains('y') && constants.contains('w')){//x y w
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(y), this.constants.get(x), this.constants.get(z), functions);
+							else if(this.variables.contains('x') && this.variables.contains('y') && this.variables.contains('w')){//x y w
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(y), this.constants.get(x), this.constants.get(z), functions);
 							}
 							else{//y z w
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(y), this.constants.get(z), functions);
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(x), this.constants.get(y), this.constants.get(z), functions);
 							}
-							if(!forAll)
-								break;
 						}
 					}
 				}
 				break;
 			case 4:
-				for(x = 0; x < constants.size(); x++){
-					for(y = 0; y < constants.size(); y++){
-						for(z = 0; z < constants.size(); z++){
-							for(w = 0; w < constants.size(); w++){
-								forAll = !temp.evaluate(this.constants.get(x), this.constants.get(y), this.constants.get(z), this.constants.get(w), functions);
-								if(!forAll)
-									break;
+				for(x = 0; x < constants.size() && forAll == true; x++){
+					for(y = 0; y < constants.size() && forAll == true; y++){
+						for(z = 0; z < constants.size() && forAll == true; z++){
+							for(w = 0; w < constants.size() && forAll == true; w++){
+								forAll = temp.evaluate(this.constants.get(x), this.constants.get(y), this.constants.get(z), this.constants.get(w), functions);
 						
 							}
 						}
@@ -113,6 +126,8 @@ public class Algebra {
 			}
 			if(forAll)
 				this.identities.add(temp);
+			else
+				this.rejectedIdentites.add(temp);
 		}
 	}
 	
@@ -134,13 +149,29 @@ public class Algebra {
 		temp += constants.get(x)+"\n";
 		temp += "identities:";
 		int identSize;
-		if(this.potentialIdentities.size() < 10)
-			identSize = this.potentialIdentities.size()-1;
+		/*
+		temp += "Number of potential identites"+this.potentialIdentities.size()+"\n";
+		//if(this.potentialIdentities.size() < 10)
+		//	identSize = this.potentialIdentities.size()-1;
 		else
 			identSize = 10;
 		for(x = 0; x < identSize; x++)
 			temp+= this.potentialIdentities.get(x)+"\n";
-		temp += this.potentialIdentities.get(x)+"\n";
+		//temp += this.potentialIdentities.get(x)+"\n";
+		 */
+		temp += "Number or real identites:"+this.identities.size()+"\n";
+		if(this.identities.size() < 10000)
+			identSize = this.identities.size()-1;
+		else
+			identSize = 10000;
+		for(x = 0; x < identSize; x++)
+			temp+= this.identities.get(x)+"\n";
+		
+		return temp;
+	}
+	
+	public String toString(int start, int end){
+		String temp = "";
 		return temp;
 	}
 

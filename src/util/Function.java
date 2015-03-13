@@ -19,6 +19,12 @@ public class Function {
 		this.secondarySymbol = support;
 	}
 	
+	public Function(Function func){
+		this.symbol = func.symbol;
+		this.arity = func.arity;
+		this.secondarySymbol = func.secondarySymbol;
+	}
+	
 	public Character getSymbol(){
 		return this.symbol;
 	}
@@ -72,8 +78,19 @@ public class Function {
 		return this.secondarySymbol;
 	}
 	
+	public String toStrinWithTable(){
+		String temp = Character.toString(symbol)+ "  "+ arity+"\n";
+		for(int y = 0; y < table.length; y++){
+			for(int x = 0; x < table[y].length; x++)
+				temp += this.table[y][x] +"\t";
+			temp += "\n";
+		}
+		return temp;
+	}
+	
 	public String toString(){
-		return Character.toString(symbol)+ "  "+ arity;
+		String temp = Character.toString(symbol)+ "  "+ arity;
+		return temp;
 	}
 	
 	public boolean equals(Object o){

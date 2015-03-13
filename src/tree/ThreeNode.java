@@ -5,7 +5,7 @@ public class ThreeNode extends TwoNode{
 	private Node centerChild;
 	private Character secondData;
 
-	public ThreeNode(Character data,Character secondData, Node left, Node center, Node right) {
+	public ThreeNode(Object data,Character secondData, Node left, Node center, Node right) {
 		super(data,left,right);
 		this.secondData = secondData;
 		this.centerChild = center;
