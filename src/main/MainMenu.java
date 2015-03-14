@@ -163,6 +163,7 @@ public class MainMenu extends JFrame implements ActionListener{
 				}
 				for(int x = count[selected]; x < topEnd; x++)
 					tabs[selected].append(ids.get(x)+"\n");
+				tabs[selected].setCaretPosition(0);
 			}
 			else{
 				System.exit(0);

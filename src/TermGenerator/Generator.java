@@ -25,25 +25,25 @@ public class Generator {
 			terms.add(new Node(i));
 		for(Integer i : this.constants)
 			terms.add(new Node(i));
-		while(terms.size() < 100){
+		while(terms.size() < 200){
 			ArrayList<Node> temp = new ArrayList<Node>();
 			for(Function i : funcs){
 				switch(i.getArity()){
 				case 1:
-					for(int x = 0; x < terms.size(); x++){
+					for(int x = 0; (x < terms.size() && temp.size() < 2000) ; x++){
 						temp.add(new OneNode(i.getSymbol(),terms.get(x)));
 					}
 					break;
 				case 2:
-					for(int x = 0; x < terms.size(); x++)
-						for(int y = 0; y < terms.size(); y++){
+					for(int x = 0; (x < terms.size() && temp.size() < 2000) ; x++)
+						for(int y = 0; y < terms.size() && temp.size() < 2000; y++){
 							temp.add(new TwoNode(i.getSymbol(), terms.get(x),terms.get(y)));
 						}
 					break;
 				case 3:
-					for(int x = 0; x < terms.size(); x++)
-						for(int y = 0; y < terms.size(); y++)
-							for(int z = 0; z < terms.size(); z++){
+					for(int x = 0; x < terms.size() && temp.size() < 2000; x++)
+						for(int y = 0; y < terms.size() && temp.size() < 2000; y++)
+							for(int z = 0; z < terms.size() && temp.size() < 2000; z++){
 								temp.add(new ThreeNode(i.getSymbol(),i.getSecondarySymbol(),terms.get(x),terms.get(y),terms.get(z)));
 							}
 					break;
@@ -52,17 +52,18 @@ public class Generator {
 					System.exit(1);
 				}
 			}
+			//System.out.println("out of loop");
 			for(Node i: temp){
 				if(!terms.contains(i))
 					terms.add(i);
 			}
+			//System.out.println(terms.size());
 			
 		}
 		//ArrayList<String> stringTerms = new ArrayList<String>();
 		for(Node i: terms)
 			for(Node j : terms)
-			this.terms.add(new Identity(i,j));
-		//System.out.println(terms.size());
+				this.terms.add(new Identity(i,j));
 		return;
 	}
 	

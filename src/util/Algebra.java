@@ -51,6 +51,8 @@ public class Algebra {
 		 */
 		for(int i = 0; i < this.potentialIdentities.size(); i++){
 			Identity temp = this.potentialIdentities.get(i);
+			if(temp == null)
+				continue;
 			int x,y,z,w;
 			boolean forAll = true;
 			switch(variables.size()){
