@@ -17,7 +17,7 @@ public class AlgebraMenu extends JDialog implements ActionListener, SharedValues
 	private JComboBox setChoice;
 	private JTextField constantText;
 	private ArrayList<Function> funcs;
-	private JTabbedPane tables;
+	//private JTabbedPane tables;
 	
 	
 	public AlgebraMenu(ArrayList<Function> functions){
@@ -137,10 +137,10 @@ public class AlgebraMenu extends JDialog implements ActionListener, SharedValues
 		if(!event.getText().contains("Done"))
 			identities.insert(event.getText(), identities.getCaretPosition());
 		else{
-			ArrayList<Identity> idents = new ArrayList<Identity>();
+			//ArrayList<Identity> idents = new ArrayList<Identity>();
 			ArrayList<Object> constants = new ArrayList<Object>();
 			
-			String set = (String)setChoice.getSelectedItem();
+			//String set = (String)setChoice.getSelectedItem();
 			String consts[] = this.constantText.getText().split(",");
 			for(int x = 0; x < consts.length; x++){
 				constants.add(consts[x]);
@@ -149,7 +149,7 @@ public class AlgebraMenu extends JDialog implements ActionListener, SharedValues
 			String[] ids = text.split("\n");
 			for(int x = 0; x < ids.length; x++){
 				try{
-					String[] id = ids[x].split(Character.toString((char) 0x2261));
+					//String[] id = ids[x].split(Character.toString((char) 0x2261));
 					//idents.add(new Identity(this.validateAndParanthesize(id[0]),this.validateAndParanthesize(id[1])));
 				}
 				catch(IndexOutOfBoundsException ioob){
@@ -166,10 +166,10 @@ public class AlgebraMenu extends JDialog implements ActionListener, SharedValues
 			
 	}
 	
-	private String validateAndParanthesize(String id){
+	public String validateAndParanthesize(String id){
 		Stack<Object> vars = new Stack<Object>();
-		Stack<Character> ops = new Stack<Character>();
-		String finaleString = "";
+		//Stack<Character> ops = new Stack<Character>();
+		//String finaleString = "";
 		if(id.length() == 1)
 			return id;
 		for(int x = 0; x < id.length(); x++){

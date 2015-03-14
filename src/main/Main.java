@@ -2,11 +2,9 @@ package main;
 
 import java.util.ArrayList;
 
-import javax.swing.*;
 
 import TermGenerator.Generator;
 import util.*;
-import tree.*;
 
 public class Main implements SharedValues{
 	

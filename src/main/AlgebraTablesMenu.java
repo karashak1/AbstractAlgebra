@@ -2,7 +2,6 @@ package main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -17,7 +16,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Function> funcs;
 	private ArrayList<FunctionTablePanel> tablePanels;
-	private ArrayList<Integer[][]> intTables;
+	//private ArrayList<Integer[][]> intTables;
 	private ArrayList<Integer> algebraConstants;
 	private JTabbedPane tables;
 	

@@ -82,7 +82,7 @@ public class Identity {
 				ThreeNode threeNode = (ThreeNode)node;
 				int leftResult = eval(threeNode.getLeftChild(),x,y,z,w);
 				int centerResult = eval(threeNode.getCenterChild(),x,y,z,w);
-				int rightResult = eval(threeNode.getRightChild(),x,y,z,w);
+				//int rightResult = eval(threeNode.getRightChild(),x,y,z,w);
 				return temp.solve(leftResult, centerResult);
 			}
 			default:
