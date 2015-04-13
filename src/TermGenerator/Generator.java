@@ -7,20 +7,22 @@ import util.*;
 
 public class Generator {
 	
-	private ArrayList<Identity> terms;
+	private ArrayList<Identity> identities;
+	private ArrayList<Node> terms;
 	private ArrayList<Function> funcs;
 	private ArrayList<Character> vars;
 	private ArrayList<Integer> constants;
 	
 	public Generator(ArrayList<Function> symbols, ArrayList<Character> vars, ArrayList<Integer> constants){
-		terms = new ArrayList<Identity>();
+		identities = new ArrayList<Identity>();
+		terms = new ArrayList<Node>();
 		funcs = symbols;
 		this.vars = vars;
 		this.constants = constants;
 	}
 	
 	public void generate(){
-		ArrayList<Node> terms = new ArrayList<Node>();
+		//ArrayList<Node> terms = new ArrayList<Node>();
 		for(Character i : vars)
 			terms.add(new Node(i));
 		for(Integer i : this.constants)
@@ -63,12 +65,16 @@ public class Generator {
 		//ArrayList<String> stringTerms = new ArrayList<String>();
 		for(Node i: terms)
 			for(Node j : terms)
-				this.terms.add(new Identity(i,j));
+				this.identities.add(new Identity(i,j));
 		return;
 	}
 	
-	public ArrayList<Identity> getTerms(){
+	public ArrayList<Node> getTerms(){
 		return terms;
+	}
+	
+	public ArrayList<Identity> getIdentities(){
+		return this.identities;
 	}
 	
 	public static void main(String args[]){
@@ -119,7 +125,7 @@ public class Generator {
 			System.out.println(i);
 		Generator gen = new Generator(funcs,vars, new ArrayList<Integer>());
 		gen.generate();
-		ArrayList<Identity> stringTerms = gen.getTerms();
+		ArrayList<Identity> stringTerms = gen.getIdentities();
 		System.out.println(stringTerms.size());
 		for(Identity i: stringTerms)
 			System.out.println(i);

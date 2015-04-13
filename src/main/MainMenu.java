@@ -173,6 +173,7 @@ public class MainMenu extends JFrame implements ActionListener{
 				this.setVisible(false);
 				ArrayList<Function> newFunctions = new ArrayList<Function>();
 				ArrayList<Function> oldFunctions = algebras[0].getFunctions();
+				
 				for(Function x: oldFunctions){
 					newFunctions.add(new Function(x));
 				}
@@ -181,8 +182,11 @@ public class MainMenu extends JFrame implements ActionListener{
 				algMenu.setVisible(true);
 				this.setVisible(true);
 				
-			
-				algebras[algCount++] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algebras[0].getIdenitites());
+				if(algCount == 1)
+					algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algebras[0].getIdenitites());
+				else
+					algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algebras[algCount-1].getRejectIdenities());
+				algCount++;
 				//System.out.println(algebras[algCount].getIdenitites());
 				JTextArea tab = new JTextArea(50,50);
 				tab.setEditable(false);
@@ -199,6 +203,7 @@ public class MainMenu extends JFrame implements ActionListener{
 				tabs[algCount-1] = tab;
 				tabScroll = new JScrollPane(tab);
 				ArrayList<Identity> ids = this.algebras[algCount-1].getRejectIdenities();
+				tab.append("Number of false identites:"+ids.size()+"\n");
 				if(ids.size() > 10000){
 					count[algCount-1] = 10000;
 					for(int x = 0; x < 10000; x++)
@@ -208,7 +213,9 @@ public class MainMenu extends JFrame implements ActionListener{
 					count[algCount-1] = ids.size();
 					for(int x = 0; x < ids.size(); x++)
 						tab.append(ids.get(x)+"\n");
+					
 				}
+				tab.setCaretPosition(0);
 				tabScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 				top.addTab("Algebra "+algCount, tabScroll);
 				

@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -19,10 +20,12 @@ public class FunctionTablePanel extends JComponent implements ActionListener {
 	private JTextField jTable[][];
 	private Line2D horz,vert;
 	private String[] commands = {"UP","DOWN","LEFT","RIGHT"};
+	private ArrayList<Integer> values;
 	
 	
-	public FunctionTablePanel(int arity){
+	public FunctionTablePanel(int arity, ArrayList<Integer> constants){
 		super();
+		values = constants;
 		this.setSize(450, 450);
 		this.setLayout(null);
 		this.arity = arity;
@@ -110,6 +113,16 @@ public class FunctionTablePanel extends JComponent implements ActionListener {
 			System.err.println("Something bad happened");
 		}
 		
+		if(values != null){
+			for(int i = 1; i < values.size()+1; i++){
+				jTable[0][i].setText(values.get(i-1)+"");
+			}
+			if(arity == 2){
+				for(int i = 1; i < values.size()+1; i++){
+					jTable[i][0].setText(values.get(i-1)+"");
+				}
+			}
+		}
 		
 	}
 	
@@ -140,7 +153,10 @@ public class FunctionTablePanel extends JComponent implements ActionListener {
 	}
 	
 	public static void main(String[] args){
-		FunctionTablePanel s = new FunctionTablePanel(2);
+		ArrayList<Integer> values = new ArrayList<Integer>();
+		values.add(0);
+		values.add(1);
+		FunctionTablePanel s = new FunctionTablePanel(1,values);
 		//s.requestFocusInWindow();
         JFrame frame = new JFrame();
         frame.setVisible(true);

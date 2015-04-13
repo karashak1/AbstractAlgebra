@@ -25,6 +25,12 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		this.init();
 	}
 	
+	public AlgebraTablesMenu(ArrayList<Function> functions, ArrayList<Integer> constants){
+		funcs = functions;
+		algebraConstants = constants;
+		this.init();
+	}
+	
 	private void init(){
 		JPanel panel = new JPanel();
 		this.getContentPane().add(panel);
@@ -44,7 +50,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 			/*JScrollPane scroll = new JScrollPane();
 			scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);*/
-			FunctionTablePanel functionTable = new FunctionTablePanel(funcs.get(x).getArity());
+			FunctionTablePanel functionTable = new FunctionTablePanel(funcs.get(x).getArity(),this.algebraConstants);
 			tablePanels.add(functionTable);
 			functionTable.setVisible(true);
 			//scroll.add(functionTable);
@@ -79,7 +85,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		 * [x] checked other tables
 		 */
 		int columns, rows, x,y;
-		ArrayList<Integer> constants = null;
+		ArrayList<Integer> localVals = null;
 		//find a table with arity 2
 		for(y = 0; y < this.funcs.size(); y++){
 			if(funcs.get(y).getArity() == 2){
@@ -145,10 +151,10 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		 * for arity 2 must check both columsn and rows
 		 */
 		table = tablePanels.get(0).getTable();
-		constants = new ArrayList<Integer>();
+		localVals = new ArrayList<Integer>();
 		for(x = 1; x < columns; x++){
-			if(!constants.contains(table[0][x])){
-				constants.add(table[0][x]);
+			if(!localVals.contains(table[0][x])){
+				localVals.add(table[0][x]);
 			}
 			else{
 				//System.err.println("Error: duplicate constants");
@@ -158,7 +164,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		}
 		if(funcs.get(0).getArity() == 2){
 			for(x = 1; x < rows; x++){
-				if(!constants.contains(table[x][0])){
+				if(!localVals.contains(table[x][0])){
 					//System.err.println("ERROR: missing constant");
 					JOptionPane.showMessageDialog(null,"Missing Constant","Constant Error", JOptionPane.ERROR_MESSAGE);
 					return false;
@@ -171,7 +177,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 			table = tablePanels.get(x).getTable();
 			//check columns
 			for(y = 1; y < columns; y++){
-				if(!constants.contains(table[0][x])){
+				if(!localVals.contains(table[0][x])){
 					//System.err.println("ERROR: missing constant at table:"+x+", row:"+y+", value:"+table[0][x]);
 					JOptionPane.showMessageDialog(null,"Missing constant at table:"+x+", row:"+y+", value:"+table[0][x],"Constant Error", JOptionPane.ERROR_MESSAGE);
 					return false;
@@ -180,7 +186,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 			//if arity 2 check rows
 			if(funcs.get(x).getArity() == 2){
 				for(y = 1; y < rows; y++){
-					if(!constants.contains(table[y][0])){
+					if(!localVals.contains(table[y][0])){
 						//System.err.println("ERROR: missing constant at table:"+x+", row:"+y);
 						JOptionPane.showMessageDialog(null,"Missing constant at table:"+x+", row:"+y,"Constant Error", JOptionPane.ERROR_MESSAGE);
 						return false;
@@ -188,7 +194,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 				}
 			}
 		}
-		this.algebraConstants = constants;
+		//this.algebraConstants = localVals;
 		return true;
 	}
 	
