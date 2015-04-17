@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 
+
 import TermGenerator.Generator;
 import tree.Node;
 import util.*;
@@ -80,14 +81,18 @@ public class Main implements SharedValues{
 			vars = null;
 			Generator gen = new Generator(funcs,variables, constants);
 			gen.generate();
-			ArrayList<Node> terms = gen.getTerms();
+			//ArrayList<Node> terms = gen.getTerms();
+			//ArrayList<Identity> ids = gen.getIdentities();
 			/*
 			 * Need to ask user if they want to see terms before
 			 * adding algebras
 			 */
-			//for(int x = 0; x < 100; x++){
-			//	System.out.println(terms.get(x));
-			//}
+			/*for(int x = 0; x < 100; x++){
+				System.out.println(terms.get(x));
+			}
+			for(int x = 0; x < 100; x++){
+				System.out.println(ids.get(x));
+			}
 			/*
 			 * Need to add algebra request...done
 			 */
@@ -98,7 +103,7 @@ public class Main implements SharedValues{
 			
 			
 			//System.out.println(terms.size());
-			algs[0] = new Algebra(variables,funcs,algebra.getConsts(),gen.getIdentities());
+			algs[0] = new Algebra(variables,funcs,algebra.getConsts(),algebra.getTableValues(),gen.getIdentities());
 			//System.out.println(algs[0]);
 			main = new MainMenu(algs);
 			main.setVisible(true);

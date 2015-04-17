@@ -177,15 +177,15 @@ public class MainMenu extends JFrame implements ActionListener{
 				for(Function x: oldFunctions){
 					newFunctions.add(new Function(x));
 				}
-				AlgebraTablesMenu algMenu = new AlgebraTablesMenu(newFunctions);
+				AlgebraTablesMenu algMenu = new AlgebraTablesMenu(newFunctions,algebras[0].getConstants());
 				algMenu.setModal(true);
 				algMenu.setVisible(true);
 				this.setVisible(true);
 				
 				if(algCount == 1)
-					algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algebras[0].getIdenitites());
+					algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[0].getIdenitites());
 				else
-					algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algebras[algCount-1].getRejectIdenities());
+					algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[algCount-1].getRejectIdenities());
 				algCount++;
 				//System.out.println(algebras[algCount].getIdenitites());
 				JTextArea tab = new JTextArea(50,50);

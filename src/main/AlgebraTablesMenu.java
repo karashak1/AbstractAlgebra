@@ -18,6 +18,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 	private ArrayList<FunctionTablePanel> tablePanels;
 	//private ArrayList<Integer[][]> intTables;
 	private ArrayList<Integer> algebraConstants;
+	private ArrayList<Integer> algebraTableValues;
 	private JTabbedPane tables;
 	
 	public AlgebraTablesMenu(ArrayList<Function> functions){
@@ -32,6 +33,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 	}
 	
 	private void init(){
+		algebraTableValues = new ArrayList<Integer>();
 		JPanel panel = new JPanel();
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -73,6 +75,10 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 	
 	public ArrayList<Integer> getConsts(){
 		return this.algebraConstants;
+	}
+	
+	public ArrayList<Integer> getTableValues(){
+		return this.algebraTableValues;
 	}
 	
 	private boolean validate(ArrayList<Integer[][]> tables){
@@ -194,11 +200,11 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 				}
 			}
 		}
-		//this.algebraConstants = localVals;
+		this.algebraTableValues = localVals;
 		return true;
 	}
 	
-	private void createTables(int constants){
+	private void createTables(int tableSize){
 		//System.out.println("called create tables, constants="+constants);
 		for(int i = 0; i < funcs.size(); i++){
 			Integer[][] table = tablePanels.get(i).getTable();
@@ -206,10 +212,10 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 			int x,y,xLimit,yLimit;
 			if(funcs.get(i).getArity() == 1){//just two rows
 				yLimit = 2;
-				xLimit = constants+1;
+				xLimit = tableSize+1;
 			}
 			else{//multiple rows
-				yLimit = xLimit = constants+1;
+				yLimit = xLimit = tableSize+1;
 				
 			}
 			temp = new Integer[yLimit][xLimit];
@@ -251,7 +257,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 				//do stuff
 				//System.out.println("So far so good");
 				//must now create the tables
-				this.createTables(this.algebraConstants.size());
+				this.createTables(this.algebraTableValues.size());
 				/*
 				for(int i = 0; i < funcs.size(); i++){
 					Integer[][] temp = funcs.get(i).getTable();
