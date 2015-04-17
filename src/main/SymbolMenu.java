@@ -86,7 +86,10 @@ public class SymbolMenu extends JDialog implements WindowListener,SharedValues{
 		});
 		panel.add(submit);
 		
-		this.setSize(55*values.length, 200);
+		if(55*values.length > 200)
+			this.setSize(55*values.length, 200);
+		else
+			this.setSize(200,200);
 		this.setTitle(title);
 		this.setLocationRelativeTo(null);
 		this.setVisible(false);
