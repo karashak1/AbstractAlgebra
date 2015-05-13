@@ -16,6 +16,10 @@ public class Node {
 		return data;
 	}
 	
+	
+	public int getHeight(){
+		return 1;
+	}
 	public boolean equals(Object o){
 		if(!(o instanceof Node))
 			return false;

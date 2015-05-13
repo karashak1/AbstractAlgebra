@@ -2,17 +2,15 @@ package main;
 
 import java.util.ArrayList;
 
-
-
+import javax.swing.JOptionPane;
 
 import TermGenerator.Generator;
-import tree.Node;
 import util.*;
 
 public class Main implements SharedValues{
 	/*
 	 * TODO list
-	 * [] add a screen to see the terms or to add an algebra
+	 * [x] add a screen to see the terms or to add an algebra
 	 * [x] break out the first menu into 3  separate  menus
 	 * 		[x] arity of 1
 	 * 		[x] arity of 2
@@ -90,43 +88,7 @@ public class Main implements SharedValues{
 			//get arity of each symbol from the airty table
 			for(int x = 0; x < symbols.getValues().size(); x++){
 				constants.add(Integer.parseInt(symbols.getValues().get(x)));
-				/*
-				char temp = symbols.getValues().get(x).charAt(0);
-				for(int y = 0; y < SharedValues.symbolValues.length; y++){
-					if(temp == SharedValues.symbolValues[y]){
-						funcs.add(new Function(temp,0));
-					}
-				}
-				*/
 			}
-			System.out.println(funcs);
-			System.out.println(constants);
-			//new version we already know arity based on symbol
-			/*
-			Object[] arity = {1,2,3};
-			for(int x = 0; x < symbols.getValues().size(); x++){
-				Integer ans = (Integer)JOptionPane.showInputDialog(null,
-						"what arity would you like for symbol "+symbols.getValues().get(x),
-						"Symbol Arity",
-						JOptionPane.PLAIN_MESSAGE,
-						null,
-						arity,
-						2);
-				if(ans != 3)
-					funcs.add(new Function(symbols.getValues().get(x).charAt(0),ans));
-				else{
-					Character symbol = (Character)JOptionPane.showInputDialog(null,
-							"Choose second symbol",
-							"Second Symbol",
-							JOptionPane.PLAIN_MESSAGE,
-							null,
-							SharedValues.symbolValues,
-							SharedValues.symbolValues[0]);
-					funcs.add(new Function(symbols.getValues().get(x).charAt(0),symbol));
-				}
-				
-			}
-			*/
 			symbols = null;
 			vars = new SymbolMenu(SharedValues.variableValues,"Variables");
 			vars.setModal(true);
@@ -148,6 +110,23 @@ public class Main implements SharedValues{
 			}
 			for(int x = 0; x < 100; x++){
 				System.out.println(ids.get(x));
+			}
+			*/
+			Object[] options = {"Yes, please",
+                    "No, create Algebra"};
+			int n = JOptionPane.showOptionDialog(null,
+							"Would you like to see the terms?",
+							"Terms",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							null,
+							options,
+							options[1]);
+			//show terms
+			if(n == 0){
+				TermMenu terms = new TermMenu(gen.getTerms(),funcs,variables);
+				terms.setModal(true);
+				terms.setVisible(true);
 			}
 			/*
 			 * Need to add algebra request...done

@@ -19,6 +19,10 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 	//private ArrayList<Integer[][]> intTables;
 	private ArrayList<Integer> algebraConstants;
 	private ArrayList<Integer> algebraTableValues;
+	private ArrayList<Character> termTableVars;
+	private ArrayList<Integer> termVarValues;
+	private JLabel[] varNames;
+	private JTextField[] varValues;
 	private JTabbedPane tables;
 	
 	public AlgebraTablesMenu(ArrayList<Function> functions){
@@ -32,8 +36,18 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		this.init();
 	}
 	
+	public AlgebraTablesMenu(ArrayList<Function> functions, ArrayList<Integer> constants,ArrayList<Character> variables){
+		funcs = functions;
+		algebraConstants = constants;
+		termTableVars = variables;
+		init();
+	}
+	
 	private void init(){
 		algebraTableValues = new ArrayList<Integer>();
+		int vars = 0;
+		if(this.termTableVars != null)
+			vars+=60;
 		JPanel panel = new JPanel();
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -60,14 +74,30 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 			
 		}
 		panel.add(tables);
+		if(this.termTableVars != null){
+			int x,y;
+			x = 10; 
+			y = 520;
+			varNames = new JLabel[this.termTableVars.size()];
+			varValues = new JTextField[this.termTableVars.size()];
+			for(int i = 0; i < this.termTableVars.size(); i++){
+				varNames[i] = new JLabel(termTableVars.get(i)+":");
+				varNames[i].setBounds(x, y, 20, 50);
+				panel.add(varNames[i]);
+				varValues[i] = new JTextField();
+				varValues[i].setBounds(x+20,y,50,50);
+				panel.add(varValues[i]);
+				x+=80;
+			}
+		}
 		
 		JButton button = new JButton("Done");
-		button.setBounds(390, 520, 100,	 50);
+		button.setBounds(390, vars+520, 100, 50);
 		button.addActionListener(this);
 		panel.add(button);
 		
 		this.setTitle("Algerbra");
-		this.setSize(500, 600);
+		this.setSize(500, 600+vars);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.setLocationRelativeTo(null);
@@ -229,13 +259,43 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		
 	}
 	
+	private boolean filledVars(){
+		if(this.termTableVars != null){
+			this.termVarValues = new ArrayList<Integer>();
+			for(int x = 0; x < this.varValues.length; x++){
+				try{
+					Integer value = Integer.parseInt(varValues[x].getText());
+					//System.out.println(this.varNames[x].getText()+" value "+value);
+					termVarValues.add(value);
+				}
+				catch(Exception e){
+					System.err.println(""+this.varNames[x].getText()+" was not filled in");
+					return false;
+				}
+			}
+			return true;
+		}
+		else{
+			return true;
+		}
+	}
+	
+	public ArrayList<Integer> getVariableValues(){
+		return this.termVarValues;
+	}
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ArrayList<Function> funcs = new ArrayList<Function>();
 		funcs.add(new Function('^',2));
 		funcs.add(new Function('!',1));
-		AlgebraTablesMenu test = new AlgebraTablesMenu(funcs);
+		ArrayList<Character> vars = new ArrayList<Character>();
+		vars.add('x');
+		vars.add('y');
+		vars.add('z');
+		vars.add('w');
+		AlgebraTablesMenu test = new AlgebraTablesMenu(funcs,null,vars);
 		//test.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		test.setVisible(true);
 		test.setModal(true);
@@ -253,26 +313,12 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		else{
 			ArrayList<Integer[][]> tempTables = new ArrayList<Integer[][]>();
 			boolean valid = this.validate(tempTables);
-			if(valid){
+			boolean filled = this.filledVars();
+			if(valid && filled){
 				//do stuff
 				//System.out.println("So far so good");
 				//must now create the tables
 				this.createTables(this.algebraTableValues.size());
-				/*
-				for(int i = 0; i < funcs.size(); i++){
-					Integer[][] temp = funcs.get(i).getTable();
-					System.out.println("table for function "+funcs.get(i).getSymbol());
-					for(int y = 0; y < temp.length; y++){
-						for(int x = 0; x < temp[y].length; x++){
-							if(temp[y][x] == null)
-								System.out.print("\t");
-							else
-								System.out.print(temp[y][x]+"\t");
-						}
-						System.out.println();
-					}
-				}
-				*/
 				this.setVisible(false);
 			}
 			else{

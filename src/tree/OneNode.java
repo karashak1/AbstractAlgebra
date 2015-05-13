@@ -22,6 +22,10 @@ public class OneNode extends Node{
 			return super.toString();
 	}
 	
+	public int getHeight(){
+		return 1+child.getHeight();
+	}
+	
 	public boolean equals(Object o){
 		return super.equals(o);
 	}

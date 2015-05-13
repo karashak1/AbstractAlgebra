@@ -92,6 +92,55 @@ public class Identity {
 		
 	}
 	
+	public static int evaluate(Node node,int x, int y, int z, int w,ArrayList<Function> funcs){
+		if(node.getData() instanceof Integer){
+			return (Integer)node.getData();
+		}
+		Character data = (Character)node.getData();
+		switch(data){
+			case 'x':
+				return x;
+			case 'y':
+				return y;
+			case 'z':
+				return z;
+			case 'w':
+				return w;
+		}
+		int i;
+		for(i = 0; i < funcs.size(); i++){
+			if(data == funcs.get(i).getSymbol())
+				break;
+		}
+		Function temp = funcs.get(i);
+		switch(temp.getArity()){
+			case 1://arity of 1 function
+			{
+				OneNode oneNode = (OneNode)node;
+				int result = evaluate(oneNode.getChild(),x,y,z,w,funcs);
+				return temp.solve(result);
+			}
+			case 2: //arity of 2 function
+			{
+				TwoNode twoNode = (TwoNode)node;
+				int leftResult = evaluate(twoNode.getLeftChild(),x,y,z,w,funcs);
+				int rightResult = evaluate(twoNode.getRightChild(),x,y,z,w,funcs);
+				return temp.solve(leftResult,rightResult);
+			}
+			case 3: //arity of 3 function
+			{
+				ThreeNode threeNode = (ThreeNode)node;
+				int leftResult = evaluate(threeNode.getLeftChild(),x,y,z,w,funcs);
+				int centerResult = evaluate(threeNode.getCenterChild(),x,y,z,w,funcs);
+				//int rightResult = evaluate(threeNode.getRightChild(),x,y,z,w,funcs);
+				return temp.solve(leftResult, centerResult);
+			}
+			default:
+				System.err.println("Something bad happened in Identiy Eval");
+				return -1;
+		}
+	}
+	
 	public String toString(){
 		return rightSide+""+Character.toString((char) 0x2261)+""+leftSide;
 	}
