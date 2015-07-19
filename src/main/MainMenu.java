@@ -2,6 +2,8 @@ package main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -45,6 +47,9 @@ public class MainMenu extends JFrame implements ActionListener{
 		JMenuItem algebra = new JMenuItem("Add Algebra");
 		algebra.addActionListener(this);
 		file.add(algebra);
+		JMenuItem save = new JMenuItem("Save");
+		save.addActionListener(this);
+		file.add(save);
 		JMenuItem exit = new JMenuItem("exit");
 		exit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
@@ -88,7 +93,7 @@ public class MainMenu extends JFrame implements ActionListener{
 		if(this.algCount >= 1){
 			ArrayList<Function> funcs = this.algebras[0].getFunctions();
 			for(int x = 0; x < funcs.size(); x++){
-				tab.append(funcs.get(x).toStrinWithTable()+"\n");
+				tab.append(funcs.get(x).toStringWithTable()+"\n");
 			}
 		}
 		JScrollPane tabScroll = new JScrollPane(tab);
@@ -169,63 +174,124 @@ public class MainMenu extends JFrame implements ActionListener{
 			}
 		}
 		else{
-			if(algCount < algebras.length){
-				this.setVisible(false);
-				ArrayList<Function> newFunctions = new ArrayList<Function>();
-				ArrayList<Function> oldFunctions = algebras[0].getFunctions();
-				
-				for(Function x: oldFunctions){
-					newFunctions.add(new Function(x));
-				}
-				AlgebraTablesMenu algMenu = new AlgebraTablesMenu(newFunctions,algebras[0].getConstants());
-				algMenu.setModal(true);
-				algMenu.setVisible(true);
-				this.setVisible(true);
-				
-				if(algCount == 1)
-					algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[0].getIdenitites());
-				else
-					algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[algCount-1].getRejectIdenities());
-				algCount++;
-				//System.out.println(algebras[algCount].getIdenitites());
-				JTextArea tab = new JTextArea(50,50);
-				tab.setEditable(false);
-				JScrollPane tabScroll = new JScrollPane(tab);
-				ArrayList<Function> funcs = this.algebras[algCount-1].getFunctions();
-				for(int x = 0; x < funcs.size(); x++){
-					tab.append(funcs.get(x).toStrinWithTable()+"\n");
-				}
-				tabScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-				bottom.addTab("Algebra "+algCount, tabScroll);
-				
-				tab = new JTextArea(50,50);
-				tab.setEditable(false);
-				tabs[algCount-1] = tab;
-				tabScroll = new JScrollPane(tab);
-				ArrayList<Identity> ids = this.algebras[algCount-1].getRejectIdenities();
-				tab.append("Number of false identites:"+ids.size()+"\n");
-				if(ids.size() > 10000){
-					count[algCount-1] = 10000;
-					for(int x = 0; x < 10000; x++)
-						tab.append(ids.get(x)+"\n");
-				}
-				else{
-					count[algCount-1] = ids.size();
-					for(int x = 0; x < ids.size(); x++)
-						tab.append(ids.get(x)+"\n");
+			JMenuItem temp = (JMenuItem)arg0.getSource();
+			//System.out.println(temp.getText());
+			if(temp.getText().contains("Add")){
+				Object[] options = {"Rejected",
+	            "Accepted"};
+				int n = JOptionPane.showOptionDialog(null,
+						"Would you like to see the accepted or rejected identities?",
+						"Accepted or Rejected",
+						JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null,
+						options,
+						options[0]);
+				if(algCount < algebras.length){
+					this.setVisible(false);
+					ArrayList<Function> newFunctions = new ArrayList<Function>();
+					ArrayList<Function> oldFunctions = algebras[0].getFunctions();
+					
+					for(Function x: oldFunctions){
+						newFunctions.add(new Function(x));
+					}
+					AlgebraTablesMenu algMenu = new AlgebraTablesMenu(newFunctions,algebras[0].getConstants());
+					algMenu.setModal(true);
+					algMenu.setVisible(true);
+					this.setVisible(true);
+					
+					if(algCount == 1)
+						algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[0].getIdenitites());
+					else
+						if(n == 0)
+							algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[algCount-1].getRejectIdenities());
+						else
+							algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[algCount-1].getIdenitites());
+					algCount++;
+					//System.out.println(algebras[algCount].getIdenitites());
+					JTextArea tab = new JTextArea(50,50);
+					tab.setEditable(false);
+					JScrollPane tabScroll = new JScrollPane(tab);
+					ArrayList<Function> funcs = this.algebras[algCount-1].getFunctions();
+					for(int x = 0; x < funcs.size(); x++){
+						tab.append(funcs.get(x).toStringWithTable()+"\n");
+					}
+					tabScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+					bottom.addTab("Algebra "+algCount, tabScroll);
+					
+					tab = new JTextArea(50,50);
+					tab.setEditable(false);
+					tabs[algCount-1] = tab;
+					tabScroll = new JScrollPane(tab);
+					ArrayList<Identity> ids;
+					if(n == 0){
+						ids = this.algebras[algCount-1].getRejectIdenities();
+						tab.append("Number of false identites:"+ids.size()+"\n");
+					}
+					else{
+						ids = this.algebras[algCount-1].getIdenitites();
+						tab.append("Number of approved identites:"+ids.size()+"\n");
+					}
+					if(ids.size() > 10000){
+						count[algCount-1] = 10000;
+						for(int x = 0; x < 10000; x++)
+							tab.append(ids.get(x)+"\n");
+					}
+					else{
+						count[algCount-1] = ids.size();
+						for(int x = 0; x < ids.size(); x++)
+							tab.append(ids.get(x)+"\n");
+						
+					}
+					tab.setCaretPosition(0);
+					tabScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+					top.addTab("Algebra "+algCount, tabScroll);
+					
+					/*
+					 * after getting the algebra now use it to weed out the bad identities
+					 */
+					//bottom.append(algebras[algCount-1].toString());
 					
 				}
-				tab.setCaretPosition(0);
-				tabScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-				top.addTab("Algebra "+algCount, tabScroll);
-				
-				/*
-				 * after getting the algebra now use it to weed out the bad identities
-				 */
-				//bottom.append(algebras[algCount-1].toString());
+				else{
+					System.err.println("to many algebras");
+				}
+			}
+			else if(temp.getText().contains("Save")){
+				final JFileChooser file = new JFileChooser();
+				int retVal = file.showSaveDialog(this);
+				if(retVal == 0){
+					if(algCount > 0){
+						Thread t = new Thread(new Runnable() {
+						    public void run() {
+						        /*
+						         * Do something
+						         */
+						    	try{
+							    	System.out.println("writing file");
+									PrintWriter writer = new PrintWriter(new FileWriter(file.getSelectedFile()));
+									for(int x = 0; x < algCount; x++){
+										//writer.println(algebras[x].toStringForFile());
+										writer.println("Algebra "+x);
+										algebras[x].toStringForFile(writer);
+									}
+									writer.flush();
+									writer.close();
+									JOptionPane.showMessageDialog(null, "File Save is Done");
+						    	}
+						    	catch(Exception e){
+						    		System.err.println(e.getLocalizedMessage());
+						    	}
+						    }
+						});
+
+						t.start();
+					}
+				}
 			}
 			else{
-				//throw pop up about to many algebras
+				//save
+				System.out.println("broken");
 			}
 		}
 		

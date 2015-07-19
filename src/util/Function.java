@@ -78,7 +78,7 @@ public class Function {
 		return this.secondarySymbol;
 	}
 	
-	public String toStrinWithTable(){
+	public String toStringWithTable(){
 		String temp = Character.toString(symbol)+ "  "+ arity+"\n";
 		for(int y = 0; y < table.length; y++){
 			for(int x = 0; x < table[y].length; x++)

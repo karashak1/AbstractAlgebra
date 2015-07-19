@@ -1,5 +1,6 @@
 package util;
 
+import java.io.PrintWriter;
 import java.util.*;
 
 public class Algebra {
@@ -180,6 +181,55 @@ public class Algebra {
 		
 		return temp;
 	}
+	
+	public void toStringForFile(PrintWriter writer){
+		String temp = "";
+		int x;
+		writer.print( "variables:");
+		for(x = 0; x < variables.size()-1; x++)
+			writer.print(variables.get(x)+",");
+		writer.print(variables.get(x)+"\n");
+		writer.println("functions:");
+		/*
+		for(x = 0; x < functions.size()-1; x++)
+			temp+= functions.get(x)+",";
+		temp += functions.get(x)+"\n";
+		*/
+		for(x = 0; x < functions.size(); x++){
+			writer.print(functions.get(x).toStringWithTable()+"\n");
+		}
+		if(this.constants.size() > 0){
+			writer.print("constants:");
+			for(x = 0; x < constants.size()-1; x++)
+				writer.print(constants.get(x)+",");
+			temp += constants.get(x)+"\n";
+		}
+		//System.out.println("done with constants");
+		temp = "";
+		temp += "identities:\n";
+		temp += "Number of real identities:"+this.identities.size()+"\n";
+		for(x = 0; x < this.identities.size(); x++){
+			if(x % 1000 == 0){
+				writer.print(temp);
+				temp = "";
+			}
+			temp+= this.identities.get(x)+"\n";
+		}
+		writer.print(temp);
+		temp = "";
+		//System.out.println("done with identities");
+		temp += "Number of false identities:"+this.rejectedIdentites.size()+"\n";
+		for(x = 0; x < this.rejectedIdentites.size(); x++){
+			if(x % 1000 == 0){
+				writer.print(temp);
+				temp = "";
+			}
+			temp+= this.rejectedIdentites.get(x)+"\n";
+		}
+		writer.print(temp);
+		//System.out.println("done with false identities");
+	}
+	
 	
 	public String toString(int start, int end){
 		String temp = "";
