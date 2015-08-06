@@ -65,7 +65,8 @@ public class Generator {
 		//ArrayList<String> stringTerms = new ArrayList<String>();
 		for(Node i: terms)
 			for(Node j : terms)
-				this.identities.add(new Identity(i,j));
+				if(!i.toString().equalsIgnoreCase(j.toString()))
+					this.identities.add(new Identity(i,j));
 		return;
 	}
 	

@@ -142,7 +142,16 @@ public class Identity {
 	}
 	
 	public String toString(){
-		return rightSide+""+Character.toString((char) 0x2261)+""+leftSide;
+		String right,left;
+		if(rightSide.toString().charAt(0) == '(' && rightSide.toString().charAt(rightSide.toString().length()-1) == ')')
+			right = rightSide.toString().substring(1, rightSide.toString().length()-1);
+		else
+			right = rightSide.toString();
+		if(leftSide.toString().charAt(0) == '(' && leftSide.toString().charAt(leftSide.toString().length()-1) == ')')
+			left = leftSide.toString().substring(1, leftSide.toString().length()-1);
+		else
+			left = leftSide.toString();
+		return right+""+Character.toString((char) 0x2261)+""+left;
 	}
 	
 
