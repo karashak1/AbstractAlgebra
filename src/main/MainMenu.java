@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+
 import javax.swing.*;
 
 import util.*;
@@ -258,9 +259,20 @@ public class MainMenu extends JFrame implements ActionListener{
 				}
 			}
 			else if(temp.getText().contains("Save")){
+				//need to ask if multiple files or just one file
+				//if multiple files get time stamp
 				final JFileChooser file = new JFileChooser();
 				int retVal = file.showSaveDialog(this);
 				if(retVal == 0){
+					Object[] options = {"Single","Multiple"};
+					final int n = JOptionPane.showOptionDialog(null,
+							"Would you like a single or multiple files",
+							"Files",
+							JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							null,
+							options,
+							options[0]);
 					if(algCount > 0){
 						Thread t = new Thread(new Runnable() {
 						    public void run() {
@@ -268,15 +280,30 @@ public class MainMenu extends JFrame implements ActionListener{
 						         * Do something
 						         */
 						    	try{
-							    	System.out.println("writing file");
-									PrintWriter writer = new PrintWriter(new FileWriter(file.getSelectedFile()));
-									for(int x = 0; x < algCount; x++){
-										//writer.println(algebras[x].toStringForFile());
-										writer.println("Algebra "+x);
-										algebras[x].toStringForFile(writer);
-									}
-									writer.flush();
-									writer.close();
+							    	//System.out.println("writing file");
+						    		//System.out.println(n);
+						    		if(n == 0){
+						    			PrintWriter writer = new PrintWriter(new FileWriter(file.getSelectedFile()));
+										for(int x = 0; x < algCount; x++){
+											//writer.println(algebras[x].toStringForFile());
+											writer.println("Algebra "+x);
+											algebras[x].toStringForFile(writer);
+										}
+										writer.flush();
+										writer.close();
+						    		}
+						    		else{
+						    			long time = System.currentTimeMillis();
+						    			for(int x = 0; x < algCount; x++){
+						    				String fileName = file.getSelectedFile().getParent()+"/"+time+"-algebra"+(x+1)+"-"+file.getSelectedFile().getName();
+						    				//System.out.println(fileName);
+						    				PrintWriter writer = new PrintWriter(new FileWriter(fileName));
+						    				algebras[x].toStringForFile(writer);
+						    				writer.flush();
+						    				writer.close();
+						    			}
+						    			
+						    		}
 									JOptionPane.showMessageDialog(null, "File Save is Done");
 						    	}
 						    	catch(Exception e){
