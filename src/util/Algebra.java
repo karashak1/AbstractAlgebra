@@ -171,7 +171,7 @@ public class Algebra {
 			temp+= this.potentialIdentities.get(x)+"\n";
 		//temp += this.potentialIdentities.get(x)+"\n";
 		 */
-		temp += "Number or real identites:"+this.identities.size()+"\n";
+		temp += "Number or real identites:"+this.identities.size()+"out of "+this.potentialIdentities.size()+" Identities\n";
 		if(this.identities.size() < 10000)
 			identSize = this.identities.size()-1;
 		else
@@ -228,6 +228,21 @@ public class Algebra {
 		}
 		writer.print(temp);
 		//System.out.println("done with false identities");
+	}
+	
+	public String toStringRejected(){
+		String temp = "";
+		int x, identSize;
+		temp += "Number of false identities:"+this.rejectedIdentites.size()+"\n";
+		if(this.rejectedIdentites.size() < 10000)
+			identSize = this.rejectedIdentites.size()-1;
+		else
+			identSize = 10000;
+		for(x = 0; x < identSize; x++){
+			temp+= this.rejectedIdentites.get(x)+"\n";
+		}
+		
+		return temp;
 	}
 	
 	

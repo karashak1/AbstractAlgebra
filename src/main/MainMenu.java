@@ -1,11 +1,11 @@
 package main;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
 
 import javax.swing.*;
 
@@ -15,10 +15,12 @@ public class MainMenu extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 6400013318405434904L;
 	private JButton submit;
-	private JButton more;
+	private JButton moreIDs;
+	private JButton moreReject;
 	private JTabbedPane top;
 	private JTabbedPane bottom;
-	private JTextArea[] tabs;
+	private JTextArea[] tabsLeft;
+	private JTextArea[] tabsRight;
 	//private ArrayList<Identity> terms;
 	//private ArrayList<Function> functions;
 	private Algebra[] algebras;
@@ -28,7 +30,8 @@ public class MainMenu extends JFrame implements ActionListener{
 	public MainMenu(Algebra[] algebras){
 		this.algebras = algebras;
 		algCount = 0;
-		tabs = new JTextArea[algebras.length];
+		tabsLeft = new JTextArea[algebras.length];
+		tabsRight = new JTextArea[algebras.length];
 		count = new Integer[algebras.length];
 		while(algebras[algCount] != null){
 			algCount++;
@@ -65,13 +68,16 @@ public class MainMenu extends JFrame implements ActionListener{
 		top.setBounds(10, 10, 780, 300);
 		panel.add(top);
 		
+		JPanel test = new JPanel();
+		test.setLayout(new GridLayout(0,2));
+		
 		JTextArea temp = new JTextArea(50,50);
-		tabs[0] = temp;
+		tabsLeft[0] = temp;
 		temp.setEditable(false);
-		JScrollPane scrollTop = new JScrollPane(temp);
-		//scrollTop.setBounds(10, 10, 780, 300);
-		scrollTop.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		//if(terms.size() >)
+		JScrollPane scrollTopLeft = new JScrollPane(temp);
+		//scrollTop.setBounds(10, 10, 440, 300);
+		scrollTopLeft.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollTopLeft.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		if(algebras[0] != null){
 			if(algebras[0].getIdenitites().size() > 10000){
@@ -82,7 +88,29 @@ public class MainMenu extends JFrame implements ActionListener{
 			}
 			temp.append(algebras[0].toString()+"\n");
 		}
-		top.addTab("Algebra "+algCount, scrollTop);
+		/*
+		 * must add for second scroll area
+		 */
+		temp = new JTextArea(50,50);
+		tabsRight[0] = temp;
+		temp.setEditable(false);
+		JScrollPane scrollTopRight = new JScrollPane(temp);
+		scrollTopRight.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollTopRight.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		if(algebras[0] != null){
+			if(algebras[0].getRejectIdenities().size() > 10000){
+				this.count[0] = 10000;
+			}
+			else{
+				this.count[0] = algebras[0].getRejectIdenities().size();
+			}
+			temp.append(algebras[0].toStringRejected()+"\n");
+		}
+		
+		test.add(scrollTopLeft);
+		test.add(scrollTopRight);
+		top.addTab("Algebra "+algCount, test);
 		
 		
 		bottom = new JTabbedPane();
@@ -102,24 +130,17 @@ public class MainMenu extends JFrame implements ActionListener{
 		//tab.append(algebras[algCount-1].toString());
 		bottom.addTab("Algebra "+algCount, tabScroll);
 		
-		/*bottom = new JTextArea(50,50);
-		//bottom.setEditable(false);
-		JScrollPane scrollBottom = new JScrollPane(bottom);
-		scrollBottom.setBounds(10,350,780,250);
-		scrollBottom.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		if(this.algCount >= 1){
-			ArrayList<Function> funcs = this.algebras[0].getFunctions();
-			for(int x = 0; x < funcs.size(); x++){
-				bottom.append(funcs.get(x).toStrinWithTable()+"\n");
-			}
-			
-		}
-		*/
+		moreIDs = new JButton("More IDs");
+		moreIDs.addActionListener(this);
+		moreIDs.setBounds(585, 310, 100, 50);
+		panel.add(moreIDs);
 		
-		more = new JButton("More");
-		more.addActionListener(this);
-		more.setBounds(685, 310, 100, 50);
-		panel.add(more);
+		moreReject = new JButton("More Reject");
+		moreReject.addActionListener(this);
+		moreReject.setBounds(685, 310, 100, 50);
+		panel.add(moreReject);
+		
+		
 		
 		
 		submit = new JButton("End");
@@ -149,17 +170,12 @@ public class MainMenu extends JFrame implements ActionListener{
 		if(arg0.getSource() instanceof JButton){
 			//System.exit(0);
 			JButton temp = (JButton)arg0.getSource();
-			if(temp.getText().contains("More")){
+			if(temp.getText().contains("More IDs")){
 				ArrayList<Identity> ids;
 				int selected = top.getSelectedIndex();
 				int topEnd;
-				if(selected == 0){
-					ids = algebras[selected].getIdenitites();
-				}
-				else{
-					ids = algebras[selected].getRejectIdenities();
-				}
-				tabs[selected].setText("");
+				ids = algebras[selected].getIdenitites();
+				tabsLeft[selected].setText("");
 				if(this.count[selected] < (ids.size() - 10000)){
 					topEnd = count[selected] + 10000;
 				}
@@ -167,8 +183,24 @@ public class MainMenu extends JFrame implements ActionListener{
 					topEnd = ids.size();
 				}
 				for(int x = count[selected]; x < topEnd; x++)
-					tabs[selected].append(ids.get(x)+"\n");
-				tabs[selected].setCaretPosition(0);
+					tabsLeft[selected].append(ids.get(x)+"\n");
+				tabsLeft[selected].setCaretPosition(0);
+			}
+			else if(temp.getText().contains("More Reject")){
+				ArrayList<Identity> ids;
+				int selected = top.getSelectedIndex();
+				int topEnd;
+				ids = algebras[selected].getRejectIdenities();
+				tabsRight[selected].setText("");
+				if(this.count[selected] < (ids.size() - 10000)){
+					topEnd = count[selected] + 10000;
+				}
+				else{
+					topEnd = ids.size();
+				}
+				for(int x = count[selected]; x < topEnd; x++)
+					tabsRight[selected].append(ids.get(x)+"\n");
+				tabsRight[selected].setCaretPosition(0);
 			}
 			else{
 				System.exit(0);
@@ -178,6 +210,7 @@ public class MainMenu extends JFrame implements ActionListener{
 			JMenuItem temp = (JMenuItem)arg0.getSource();
 			//System.out.println(temp.getText());
 			if(temp.getText().contains("Add")){
+				
 				Object[] options = {"Rejected",
 	            "Accepted"};
 				int n = JOptionPane.showOptionDialog(null,
@@ -188,6 +221,7 @@ public class MainMenu extends JFrame implements ActionListener{
 						null,
 						options,
 						options[0]);
+						
 				if(algCount < algebras.length){
 					this.setVisible(false);
 					ArrayList<Function> newFunctions = new ArrayList<Function>();
@@ -219,10 +253,10 @@ public class MainMenu extends JFrame implements ActionListener{
 					}
 					tabScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 					bottom.addTab("Algebra "+algCount, tabScroll);
-					
+					/*
 					tab = new JTextArea(50,50);
 					tab.setEditable(false);
-					tabs[algCount-1] = tab;
+					tabsLeft[algCount-1] = tab;
 					tabScroll = new JScrollPane(tab);
 					ArrayList<Identity> ids;
 					if(n == 0){
@@ -246,6 +280,49 @@ public class MainMenu extends JFrame implements ActionListener{
 					}
 					tab.setCaretPosition(0);
 					tabScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+					*/
+					JPanel test = new JPanel();
+					test.setLayout(new GridLayout(0,2));
+					
+					tab = new JTextArea(50,50);
+					tabsLeft[algCount-1] = tab;
+					tab.setEditable(false);
+					JScrollPane scrollTopLeft = new JScrollPane(temp);
+					//scrollTop.setBounds(10, 10, 440, 300);
+					scrollTopLeft.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+					scrollTopLeft.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+					
+					if(algebras[0] != null){
+						if(algebras[0].getIdenitites().size() > 10000){
+							this.count[0] = 10000;
+						}
+						else{
+							this.count[0] = algebras[0].getIdenitites().size();
+						}
+						tab.append(algebras[0].toString()+"\n");
+					}
+					/*
+					 * must add for second scroll area
+					 */
+					tab = new JTextArea(50,50);
+					tabsRight[algCount-1] = tab;
+					tab.setEditable(false);
+					JScrollPane scrollTopRight = new JScrollPane(temp);
+					scrollTopRight.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+					scrollTopRight.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+					
+					if(algebras[0] != null){
+						if(algebras[0].getRejectIdenities().size() > 10000){
+							this.count[0] = 10000;
+						}
+						else{
+							this.count[0] = algebras[0].getRejectIdenities().size();
+						}
+						tab.append(algebras[0].toStringRejected()+"\n");
+					}
+					
+					test.add(scrollTopLeft);
+					test.add(scrollTopRight);
 					top.addTab("Algebra "+algCount, tabScroll);
 					
 					/*
