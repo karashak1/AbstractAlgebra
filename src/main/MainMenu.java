@@ -21,8 +21,6 @@ public class MainMenu extends JFrame implements ActionListener{
 	private JTabbedPane bottom;
 	private JTextArea[] tabsLeft;
 	private JTextArea[] tabsRight;
-	//private ArrayList<Identity> terms;
-	//private ArrayList<Function> functions;
 	private Algebra[] algebras;
 	private Integer[] count;
 	private int algCount;
@@ -179,12 +177,20 @@ public class MainMenu extends JFrame implements ActionListener{
 				if(this.count[selected] < (ids.size() - 10000)){
 					topEnd = count[selected] + 10000;
 				}
+				else if(this.count[selected] == ids.size()){
+					count[selected] = 0;
+					if(ids.size()< 10000)
+						topEnd = ids.size();
+					else
+						topEnd = 10000;
+				}
 				else{
 					topEnd = ids.size();
 				}
 				for(int x = count[selected]; x < topEnd; x++)
 					tabsLeft[selected].append(ids.get(x)+"\n");
 				tabsLeft[selected].setCaretPosition(0);
+				count[selected] +=  topEnd - count[selected];
 			}
 			else if(temp.getText().contains("More Reject")){
 				ArrayList<Identity> ids;
@@ -195,12 +201,20 @@ public class MainMenu extends JFrame implements ActionListener{
 				if(this.count[selected] < (ids.size() - 10000)){
 					topEnd = count[selected] + 10000;
 				}
+				else if(this.count[selected] == ids.size()){
+					count[selected] = 0;
+					if(ids.size()< 10000)
+						topEnd = ids.size();
+					else
+						topEnd = 10000;
+				}
 				else{
 					topEnd = ids.size();
 				}
 				for(int x = count[selected]; x < topEnd; x++)
 					tabsRight[selected].append(ids.get(x)+"\n");
 				tabsRight[selected].setCaretPosition(0);
+				count[selected] +=  topEnd - count[selected];
 			}
 			else{
 				System.exit(0);
@@ -292,14 +306,14 @@ public class MainMenu extends JFrame implements ActionListener{
 					scrollTopLeft.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 					scrollTopLeft.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 					
-					if(algebras[0] != null){
-						if(algebras[0].getIdenitites().size() > 10000){
-							this.count[0] = 10000;
+					if(algebras[algCount-1] != null){
+						if(algebras[algCount-1].getIdenitites().size() > 10000){
+							this.count[algCount-1] = 10000;
 						}
 						else{
-							this.count[0] = algebras[0].getIdenitites().size();
+							this.count[algCount-1] = algebras[algCount-1].getIdenitites().size();
 						}
-						tab.append(algebras[0].toString()+"\n");
+						tab.append(algebras[algCount-1].toString()+"\n");
 					}
 					/*
 					 * must add for second scroll area
@@ -311,14 +325,14 @@ public class MainMenu extends JFrame implements ActionListener{
 					scrollTopRight.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 					scrollTopRight.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 					
-					if(algebras[0] != null){
-						if(algebras[0].getRejectIdenities().size() > 10000){
-							this.count[0] = 10000;
+					if(algebras[algCount-1] != null){
+						if(algebras[algCount-1].getRejectIdenities().size() > 10000){
+							this.count[algCount-1] = 10000;
 						}
 						else{
-							this.count[0] = algebras[0].getRejectIdenities().size();
+							this.count[algCount-1] = algebras[algCount-1].getRejectIdenities().size();
 						}
-						tab.append(algebras[0].toStringRejected()+"\n");
+						tab.append(algebras[algCount-1].toStringRejected()+"\n");
 					}
 					
 					test.add(scrollTopLeft);
