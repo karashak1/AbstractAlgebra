@@ -339,11 +339,6 @@ public class MainMenu extends JFrame implements ActionListener{
 					test.add(scrollTopRight);
 					top.addTab("Algebra "+algCount, tabScroll);
 					
-					/*
-					 * after getting the algebra now use it to weed out the bad identities
-					 */
-					//bottom.append(algebras[algCount-1].toString());
-					
 				}
 				else{
 					System.err.println("to many algebras");
