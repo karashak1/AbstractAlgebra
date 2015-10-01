@@ -52,7 +52,7 @@ public class MainMenu extends JFrame implements ActionListener{
 		JMenuItem save = new JMenuItem("Save");
 		save.addActionListener(this);
 		file.add(save);
-		JMenuItem exit = new JMenuItem("exit");
+		JMenuItem exit = new JMenuItem("Exit");
 		exit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				System.exit(0);
@@ -237,6 +237,7 @@ public class MainMenu extends JFrame implements ActionListener{
 						options[0]);
 						
 				if(algCount < algebras.length){
+					//System.out.println("we are in here");
 					this.setVisible(false);
 					ArrayList<Function> newFunctions = new ArrayList<Function>();
 					ArrayList<Function> oldFunctions = algebras[0].getFunctions();
@@ -249,13 +250,13 @@ public class MainMenu extends JFrame implements ActionListener{
 					algMenu.setVisible(true);
 					this.setVisible(true);
 					
-					if(algCount == 1)
-						algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[0].getIdenitites());
+					//if(algCount == 1)
+						//algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[0].getIdenitites());
+					//else
+					if(n == 0)
+						algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[algCount-1].getRejectIdenities());
 					else
-						if(n == 0)
-							algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[algCount-1].getRejectIdenities());
-						else
-							algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[algCount-1].getIdenitites());
+						algebras[algCount] = new Algebra(algebras[0].getVariables(), newFunctions,algMenu.getConsts(),algMenu.getTableValues(),algebras[algCount-1].getIdenitites());
 					algCount++;
 					//System.out.println(algebras[algCount].getIdenitites());
 					JTextArea tab = new JTextArea(50,50);
@@ -301,7 +302,7 @@ public class MainMenu extends JFrame implements ActionListener{
 					tab = new JTextArea(50,50);
 					tabsLeft[algCount-1] = tab;
 					tab.setEditable(false);
-					JScrollPane scrollTopLeft = new JScrollPane(temp);
+					JScrollPane scrollTopLeft = new JScrollPane(tab);
 					//scrollTop.setBounds(10, 10, 440, 300);
 					scrollTopLeft.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 					scrollTopLeft.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -315,13 +316,14 @@ public class MainMenu extends JFrame implements ActionListener{
 						}
 						tab.append(algebras[algCount-1].toString()+"\n");
 					}
+					tab.setCaretPosition(0);
 					/*
 					 * must add for second scroll area
 					 */
 					tab = new JTextArea(50,50);
 					tabsRight[algCount-1] = tab;
 					tab.setEditable(false);
-					JScrollPane scrollTopRight = new JScrollPane(temp);
+					JScrollPane scrollTopRight = new JScrollPane(tab);
 					scrollTopRight.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 					scrollTopRight.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 					
@@ -334,10 +336,10 @@ public class MainMenu extends JFrame implements ActionListener{
 						}
 						tab.append(algebras[algCount-1].toStringRejected()+"\n");
 					}
-					
+					tab.setCaretPosition(0);
 					test.add(scrollTopLeft);
 					test.add(scrollTopRight);
-					top.addTab("Algebra "+algCount, tabScroll);
+					top.addTab("Algebra "+algCount, test);
 					
 				}
 				else{
