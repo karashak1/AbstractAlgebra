@@ -228,7 +228,7 @@ public class MainMenu extends JFrame implements ActionListener{
 				Object[] options = {"Rejected",
 	            "Accepted"};
 				int n = JOptionPane.showOptionDialog(null,
-						"Would you like to see the accepted or rejected identities?",
+						"Would you like to use the accepted or rejected identies of Algebra"+(algCount-1)+"?",
 						"Accepted or Rejected",
 						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE,
