@@ -52,7 +52,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel label = new JLabel("Please enter values in the function tables");
+		JLabel label = new JLabel("Please enter values into the function tables");
 		panel.add(label);
 		label.setBounds(0, 5, 500, 10);
 		label.setHorizontalAlignment(JLabel.CENTER);
@@ -157,7 +157,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 						if(table[x][y] == null){
 							//print a warning of where the error is
 							//System.out.println("table:"+i+", row:" +x+", columns:"+y);
-							JOptionPane.showMessageDialog(null,"table:"+i+", row:" +x+", columns:"+y,"Table Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null,"table:"+funcs.get(i).getSymbol()+", row:" +x+", columns:"+y,"Table Error", JOptionPane.ERROR_MESSAGE);
 							return false;
 						}
 					}
@@ -171,7 +171,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 						if(table[x][y] == null){
 							//print a warning of where the error is
 							//System.out.println("table:"+i+", row:" +x+", columns:"+y);
-							JOptionPane.showMessageDialog(null,"table:"+i+", row:" +x+", columns:"+y,"Table Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null,"table:"+funcs.get(i).getSymbol()+", row:" +x+", columns:"+y,"Table Error", JOptionPane.ERROR_MESSAGE);
 							return false;
 						}
 					}
@@ -215,7 +215,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 			for(y = 1; y < columns; y++){
 				if(!localVals.contains(table[0][x])){
 					//System.err.println("ERROR: missing constant at table:"+x+", row:"+y+", value:"+table[0][x]);
-					JOptionPane.showMessageDialog(null,"Missing constant at table:"+x+", row:"+y+", value:"+table[0][x],"Constant Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Missing constant at table:"+funcs.get(x).getSymbol()+", row:"+y+", value:"+table[0][x],"Constant Error", JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			}
@@ -224,7 +224,7 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 				for(y = 1; y < rows; y++){
 					if(!localVals.contains(table[y][0])){
 						//System.err.println("ERROR: missing constant at table:"+x+", row:"+y);
-						JOptionPane.showMessageDialog(null,"Missing constant at table:"+x+", row:"+y,"Constant Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,"Missing constant at table:"+funcs.get(x).getSymbol()+", row:"+y,"Constant Error", JOptionPane.ERROR_MESSAGE);
 						return false;
 					}
 				}
