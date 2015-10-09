@@ -13,18 +13,23 @@ public class SymbolMenu extends JDialog implements WindowListener,SharedValues{
 	private ArrayList<String> returnValues;
 	private JLabel resultLabel;
 	private JTextField resultText;
-	private JButton submit;
+	private JButton submit, back;
+	private boolean goBack,hasGoBack;
 	private boolean visible;
 	
-	public SymbolMenu(Character[] values, String title){
+	public SymbolMenu(Character[] values, String title, boolean hasGoBack){
 		returnValues = new ArrayList<String>();
 		visible = true;
+		goBack = false;
+		this.hasGoBack = hasGoBack;
 		init(values, title);
 	}
 	
-	public SymbolMenu(Character[] values, String title, ArrayList<String> valuesArray){
+	public SymbolMenu(Character[] values, String title, ArrayList<String> valuesArray, boolean hasGoBack){
 		returnValues = valuesArray;
 		visible = true;
+		goBack = false;
+		this.hasGoBack = hasGoBack;
 		init(values, title);
 	}
 	
@@ -34,6 +39,10 @@ public class SymbolMenu extends JDialog implements WindowListener,SharedValues{
 	
 	public void resetVisible(){
 		visible = true;
+	}
+	
+	public boolean checkBack(){
+		return goBack;
 	}
 	
 	private void init(Character[] values, String title){
@@ -72,6 +81,7 @@ public class SymbolMenu extends JDialog implements WindowListener,SharedValues{
 		resultText.setEditable(false);
 		panel.add(resultText);
 		
+		
 		y+= 55;
 		x = 55*(values.length-2);
 		submit = new JButton("Submit");
@@ -85,6 +95,22 @@ public class SymbolMenu extends JDialog implements WindowListener,SharedValues{
 			}
 		});
 		panel.add(submit);
+		
+		if(hasGoBack == true){
+			if(values.length >= 4)
+				x = 55*(values.length-4);
+			else
+				x = 50*2;
+			back = new JButton("Back");
+			back.setBounds(x, y, 100, 50);
+			back.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent event){
+					setVisible(false);
+					goBack = true;
+				}
+			});
+			panel.add(back);
+		}
 		
 		if(55*values.length > 200)
 			this.setSize(55*values.length, 200);
@@ -107,7 +133,7 @@ public class SymbolMenu extends JDialog implements WindowListener,SharedValues{
 	}
 	
 	public static void main(String[] args){
-		SymbolMenu sm = new SymbolMenu(SharedValues.symbolValues,"Symbols");
+		SymbolMenu sm = new SymbolMenu(SharedValues.symbolValues,"Symbols",true);
 		while(sm.isVisible()){
 			//System.out.println(sm.isVisible());
 		}

@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
@@ -54,48 +55,99 @@ public class Main implements SharedValues{
 				else
 					arity0[count0++] = SharedValues.symbolValues[i];
 			//arity 1
-			symbols = new SymbolMenu(arity1,"Unary Symbols",returnValues);
-			symbols.setModal(true);
-			symbols.setVisible(true);
-			//get arity of each symbol from the airty table
-			for(int x = 0; x < symbols.getValues().size(); x++){
-				char temp = symbols.getValues().get(x).charAt(0);
-				for(int y = 0; y < SharedValues.symbolValues.length; y++){
-					if(temp == SharedValues.symbolValues[y]){
-						funcs.add(new Function(temp,1));
-					}
+			//need to place while here
+			int loop = 0;
+			Iterator<Function> iter;
+			while(loop < 4){
+				switch(loop){
+					case 0:
+						symbols = new SymbolMenu(arity1,"Unary Symbols",returnValues,false);
+						symbols.setModal(true);
+						symbols.setVisible(true);
+						iter = funcs.iterator();
+						while (iter.hasNext()) {
+						    Function str = iter.next();
+						    if (str.getArity() == 1)
+						        iter.remove();
+						}
+						//get arity of each symbol from the airty table
+						for(int x = 0; x < symbols.getValues().size(); x++){
+							char temp = symbols.getValues().get(x).charAt(0);
+							for(int y = 0; y < SharedValues.symbolValues.length; y++){
+								if(temp == SharedValues.symbolValues[y]){
+									funcs.add(new Function(temp,1));
+								}
+							}
+						}
+						returnValues.clear();
+						if(!symbols.checkBack() == true)
+							loop++;
+						else
+							loop--;
+						break;
+					
+					//arity 2
+					case 1:
+						symbols = new SymbolMenu(arity2,"Binary Symbols",returnValues,true);
+						symbols.setModal(true);
+						symbols.setVisible(true);
+						
+						iter = funcs.iterator();
+						while (iter.hasNext()) {
+						    Function str = iter.next();
+						    if (str.getArity() == 2)
+						        iter.remove();
+						}
+						//get arity of each symbol from the airty table
+						for(int x = 0; x < symbols.getValues().size(); x++){
+							char temp = symbols.getValues().get(x).charAt(0);
+							for(int y = 0; y < SharedValues.symbolValues.length; y++){
+								if(temp == SharedValues.symbolValues[y]){
+									funcs.add(new Function(temp,2));
+								}
+							}
+						}
+						returnValues.clear();
+						if(!symbols.checkBack() == true)
+							loop++;
+						else
+							loop--;
+						break;
+					//Constants
+					case 2:
+						symbols = new SymbolMenu(arity0,"Constant Symbols",returnValues,true);
+						symbols.setModal(true);
+						symbols.setVisible(true);
+						constants.clear();
+						//get arity of each symbol from the airty table
+						for(int x = 0; x < symbols.getValues().size(); x++){
+							constants.add(Integer.parseInt(symbols.getValues().get(x)));
+						}
+						
+						if(!symbols.checkBack() == true)
+							loop++;
+						else
+							loop--;
+						break;
+					case 3:
+						vars = new SymbolMenu(SharedValues.variableValues,"Variables",true);
+						vars.setModal(true);
+						vars.setVisible(true);
+						variables.clear();
+						for(int x = 0; x < vars.getValues().size(); x++){
+							variables.add(vars.getValues().get(x).charAt(0));
+						}
+						if(!vars.checkBack() == true)
+							loop++;
+						else
+							loop--;
+						break;
+					default:
+						System.err.println("we had a problem with the symbol menues");
+						
 				}
-			}
-			returnValues.clear();
-			//arity 2
-			symbols = new SymbolMenu(arity2,"Binary Symbols",returnValues);
-			symbols.setModal(true);
-			symbols.setVisible(true);
-			//get arity of each symbol from the airty table
-			for(int x = 0; x < symbols.getValues().size(); x++){
-				char temp = symbols.getValues().get(x).charAt(0);
-				for(int y = 0; y < SharedValues.symbolValues.length; y++){
-					if(temp == SharedValues.symbolValues[y]){
-						funcs.add(new Function(temp,2));
-					}
-				}
-			}
-			returnValues.clear();
-			//Constants
-			symbols = new SymbolMenu(arity0,"Constant Symbols",returnValues);
-			symbols.setModal(true);
-			symbols.setVisible(true);
-			//get arity of each symbol from the airty table
-			for(int x = 0; x < symbols.getValues().size(); x++){
-				constants.add(Integer.parseInt(symbols.getValues().get(x)));
 			}
 			symbols = null;
-			vars = new SymbolMenu(SharedValues.variableValues,"Variables");
-			vars.setModal(true);
-			vars.setVisible(true);
-			for(int x = 0; x < vars.getValues().size(); x++){
-				variables.add(vars.getValues().get(x).charAt(0));
-			}
 			vars = null;
 			Generator gen = new Generator(funcs,variables, constants);
 			gen.generate();
