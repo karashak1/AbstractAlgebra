@@ -121,13 +121,18 @@ public class AlgebraTablesMenu extends JDialog implements ActionListener{
 		 * [x] checked other tables
 		 */
 		int columns, rows, x,y;
+		boolean noTwo = true;
 		ArrayList<Integer> localVals = null;
 		//find a table with arity 2
 		for(y = 0; y < this.funcs.size(); y++){
 			if(funcs.get(y).getArity() == 2){
 				//System.out.println("table "+y);
+				noTwo = false;
 				break;
 			}
+		}
+		if(noTwo){
+			y = 0;
 		}
 		Integer[][] table = tablePanels.get(y).getTable();
 		if(table == null)
