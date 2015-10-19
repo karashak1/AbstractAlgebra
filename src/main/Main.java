@@ -123,7 +123,7 @@ public class Main implements SharedValues{
 						for(int x = 0; x < symbols.getValues().size(); x++){
 							constants.add(Integer.parseInt(symbols.getValues().get(x)));
 						}
-						
+						returnValues.clear();
 						if(!symbols.checkBack() == true)
 							loop++;
 						else

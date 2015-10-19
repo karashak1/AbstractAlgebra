@@ -54,11 +54,11 @@ public class Function {
 	public Integer solve(Integer x, Integer y){
 		if(arity == 2){
 			int i, j;
-			for(i = 1; i < table[0].length; i++){
-				if(table[0][i] == x){
-					for(j = 1; j < table.length; j++){
-						if(table[j][0] == y){
-							return table[j][i];
+			for(i = 1; i < table.length; i++){
+				if(table[i][0] == x){
+					for(j = 1; j < table[0].length; j++){
+						if(table[0][j] == y){
+							return table[i][j];
 						}
 					}
 				}
